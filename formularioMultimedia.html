@@ -1,0 +1,659 @@
+<!doctype html>
+<html lang="pt">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>FormuláriooGLG</title>
+    <style>
+        :root {
+            /* cores principais */
+            --orange: #ff7a00;
+            --yellow: #ffd400;
+            --accent: #ff9a2e;
+            /* cor de destaque intermédia */
+            --bg-soft: rgba(255, 240, 220, 0.06);
+
+            /* neutros / texto */
+            --white: #ffffff;
+            --muted: #6b6b6b;
+            --text: #111111;
+
+            /* vidro / cartões */
+            --glass: rgba(255, 255, 255, 0.85);
+            --card-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(255, 250, 240, 0.96));
+            --card-border: rgba(255, 200, 120, 0.08);
+
+            /* sombras / glow */
+            --shadow-sm: 0 6px 18px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 14px 48px rgba(0, 0, 0, 0.12);
+            --glow: 0 0 28px rgba(255, 155, 50, 0.14);
+            --accent-glow: rgba(255, 150, 30, 0.14);
+
+            /* layout / formas */
+            --radius: 16px;
+            --radius-sm: 10px;
+
+            /* motion */
+            --ease: cubic-bezier(.2, .9, .3, 1);
+            --fast: 180ms;
+            --med: 280ms;
+        }
+
+        /* reset / base */
+        * {
+            box-sizing: border-box
+        }
+
+        html,
+        body {
+            height: 100%
+        }
+
+        body {
+            margin: 0;
+            font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+            background: linear-gradient(135deg, rgba(255, 200, 140, 0.06), rgba(255, 235, 160, 0.03));
+            color: var(--text);
+            -webkit-font-smoothing: antialiased;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 28px;
+            /* leve textura/variação de fundo */
+            background-size: 200% 200%;
+            animation: bgShift 18s linear infinite;
+        }
+
+        @keyframes bgShift {
+            0% {
+                background-position: 0% 50%
+            }
+
+            50% {
+                background-position: 100% 50%
+            }
+
+            100% {
+                background-position: 0% 50%
+            }
+        }
+
+        /* wrapper e cartão */
+        .wrap {
+            width: 100%;
+            max-width: 1000px;
+            padding: 18px
+        }
+
+        .card {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 22px;
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 22px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--card-border);
+            align-items: start;
+            overflow: hidden;
+            position: relative;
+            transition: transform var(--med) var(--ease), box-shadow var(--med) var(--ease);
+        }
+
+        .card:hover {
+            transform: translateY(-6px) scale(1.004);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* decorative blobs (mais controlados) */
+        .card::before,
+        .card::after {
+            content: '';
+            position: absolute;
+            pointer-events: none;
+            mix-blend-mode: screen;
+            border-radius: 48%;
+            opacity: 0.95;
+        }
+
+        .card::before {
+            width: 420px;
+            height: 420px;
+            left: -12%;
+            top: -20%;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 160, 60, 0.12), transparent 32%);
+            transform: rotate(6deg);
+            animation: blobMove 11s var(--ease) infinite;
+        }
+
+        .card::after {
+            width: 300px;
+            height: 300px;
+            right: -8%;
+            bottom: -20%;
+            background: radial-gradient(circle at 70% 70%, rgba(255, 220, 80, 0.08), transparent 36%);
+            transform: rotate(-12deg);
+            animation: blobMove 13s var(--ease) infinite reverse;
+        }
+
+        @keyframes blobMove {
+            0% {
+                transform: translateY(0) scale(1) rotate(0deg)
+            }
+
+            50% {
+                transform: translateY(-12px) scale(1.02) rotate(6deg)
+            }
+
+            100% {
+                transform: translateY(0) scale(1) rotate(0deg)
+            }
+        }
+
+        /* intro / avatar */
+        .intro {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            padding: 18px;
+            border-radius: 12px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(255, 250, 240, 0.96));
+            position: relative;
+            overflow: visible;
+        }
+
+        .avatar {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 6px solid var(--glass);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08), inset 0 0 24px rgba(255, 200, 100, 0.06);
+            background: linear-gradient(135deg, var(--orange), var(--yellow));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform var(--med) var(--ease), box-shadow var(--med) var(--ease);
+        }
+
+        /* leve flutuação */
+        .avatar {
+            animation: floatAvatar 6.5s var(--ease) infinite;
+        }
+
+        @keyframes floatAvatar {
+            0% {
+                transform: translateY(0)
+            }
+
+            50% {
+                transform: translateY(-8px)
+            }
+
+            100% {
+                transform: translateY(0)
+            }
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform .6s var(--ease)
+        }
+
+        .avatar:hover img {
+            transform: scale(1.06) rotate(-1deg)
+        }
+
+        /* títulos e textos */
+        h1 {
+            font-size: 20px;
+            margin: 6px 0 0;
+            color: var(--orange);
+            letter-spacing: .6px;
+            text-shadow: 0 2px 6px rgba(255, 120, 40, 0.06)
+        }
+
+        p.lead {
+            margin: 0;
+            font-size: 13px;
+            color: var(--muted);
+            text-align: center
+        }
+
+        /* form container (painel) */
+        form {
+            background: transparent;
+            padding: 0
+        }
+
+        .panel {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.995), rgba(255, 250, 246, 0.98));
+            border-radius: 12px;
+            padding: 18px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid rgba(255, 200, 120, 0.06);
+            transition: box-shadow var(--med) var(--ease), transform var(--med) var(--ease);
+        }
+
+        .panel:focus-within {
+            box-shadow: 0 18px 40px rgba(255, 150, 40, 0.06);
+            transform: translateY(-4px)
+        }
+
+        /* grid e labels */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px
+        }
+
+        label {
+            font-size: 13px;
+            color: #333;
+            display: block;
+            margin-bottom: 6px
+        }
+
+        /* inputs (com destaque quando focados) */
+        input[type="text"],
+        input[type="email"],
+        textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            background: linear-gradient(180deg, #fff, #fff);
+            font-size: 14px;
+            outline: none;
+            transition: box-shadow var(--fast) var(--ease), transform var(--fast) var(--ease), border-color var(--fast) var(--ease);
+            background-image: linear-gradient(90deg, rgba(255, 160, 60, 0.06), rgba(255, 210, 80, 0.04));
+            background-repeat: no-repeat;
+            background-position: 0 0;
+            background-size: 200% 100%;
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: #b7b7b7
+        }
+
+        input:focus,
+        textarea:focus {
+            box-shadow: 0 6px 30px var(--accent-glow), var(--glow);
+            border-color: var(--accent);
+            transform: translateY(-2px);
+            background-position: 100% 0;
+        }
+
+        /* ajuda e actions */
+        .help {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 6px
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 14px;
+            align-items: center;
+            flex-wrap: wrap
+        }
+
+        /* botões e estados */
+        .btn {
+            border: 0;
+            padding: 12px 18px;
+            border-radius: 999px;
+            cursor: pointer;
+            font-weight: 700;
+            letter-spacing: .4px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: transform var(--fast) var(--ease), box-shadow var(--fast) var(--ease), filter var(--fast) var(--ease);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:active {
+            transform: translateY(2px)
+        }
+
+        /* primary com brilho móvel */
+        .btn-primary {
+            background: linear-gradient(90deg, var(--orange), var(--yellow));
+            color: #2b1200;
+            box-shadow: 0 12px 30px rgba(255, 140, 40, 0.12), var(--glow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: -40%;
+            left: -30%;
+            width: 40%;
+            height: 180%;
+            background: linear-gradient(120deg, rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0.06));
+            transform: rotate(-20deg);
+            filter: blur(12px);
+            transition: left .6s var(--ease);
+        }
+
+        .btn-primary:hover::before {
+            left: 90%;
+            transform: rotate(-18deg)
+        }
+
+        /* animated sheen for primary */
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(120deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.02));
+            mix-blend-mode: overlay;
+            opacity: 0;
+            transition: opacity .3s
+        }
+
+        .btn-primary:hover::after {
+            opacity: 1
+        }
+
+        .btn-ghost {
+            background: transparent;
+            border: 1px solid rgba(255, 122, 0, 0.12);
+            color: var(--orange);
+            padding: 10px 16px
+        }
+
+        .btn-muted {
+            background: #fff;
+            border: 1px solid rgba(0, 0, 0, 0.06)
+        }
+
+        .btn:hover {
+            transform: translateY(-4px) scale(1.01)
+        }
+
+        .icon {
+            width: 18px;
+            height: 18px;
+            display: inline-block
+        }
+
+        /* preview modal */
+        .preview {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.35);
+            align-items: center;
+            justify-content: center;
+            padding: 20px
+        }
+
+        .preview .box {
+            background: #fff;
+            padding: 18px;
+            border-radius: 12px;
+            max-width: 620px;
+            width: 100%;
+            box-shadow: 0 14px 40px rgba(0, 0, 0, 0.18)
+        }
+
+        .preview pre {
+            white-space: pre-wrap;
+            font-family: system-ui, monospace
+        }
+
+        /* toast */
+        .toast {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            background: #222;
+            color: #fff;
+            padding: 10px 14px;
+            border-radius: 10px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transform: translateY(12px);
+            transition: opacity .26s, transform .26s
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0)
+        }
+
+        /* char counter */
+        .meta-row {
+            display: flex;
+            gap: 12px;
+            align-items: center
+        }
+
+        .counter {
+            margin-left: auto;
+            font-size: 12px;
+            color: var(--muted)
+        }
+
+        @media (max-width:900px) {
+            .card {
+                grid-template-columns: 1fr
+            }
+
+            .avatar {
+                width: 120px;
+                height: 120px
+            }
+
+            .grid {
+                grid-template-columns: 1fr
+            }
+        }
+
+        /* reduced motion */
+        @media (prefers-reduced-motion:reduce) {
+            * {
+                transition: none !important
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <main class="card" role="main" aria-labelledby="title">
+            <section class="intro" aria-hidden="false">
+                <div class="avatar" aria-hidden="true">
+                    <img src="WhatsApp Image 2025-10-15 at 23.24.39_5a7f21e0.jpg"
+                        alt="Foto do usuário — substitua este ficheiro">
+                </div>
+                <h1 id="title">Formulário</h1>
+                <p class="lead">Registra-te e questiona-me</p>
+            </section>
+
+            <form id="registroForm" class="panel" autocomplete="on" novalidate>
+                <div class="grid">
+                    <div>
+                        <label for="nome">Nome completo</label>
+                        <input id="nome" name="nome" type="text" placeholder="Seu nome" required aria-required="true">
+                        <div class="help" id="nomeHelp"></div>
+                    </div>
+
+                    <div>
+                        <label for="email">E‑mail</label>
+                        <input id="email" name="email" type="email" placeholder="seu@exemplo.com" required
+                            aria-required="true">
+                        <div class="help" id="emailHelp"></div>
+                    </div>
+
+                    <div>
+                        <label for="telefone">Telefone (para receber SMS)</label>
+                        <input id="telefone" name="telefone" type="text" placeholder="+2588xxxxxxxx" inputmode="tel"
+                            required aria-required="true">
+                        <div class="help">Formato sugerido: insira o numero</div>
+                    </div>
+
+                    <div>
+                        <label for="assunto">Assunto (curto)</label>
+                        <input id="assunto" name="assunto" type="text" placeholder="Registro / Perguntas" required>
+                    </div>
+
+                    <div style="grid-column:1 / -1;">
+                        <label for="questionario">Questionário — suas respostas</label>
+                        <textarea id="questionario" name="questionario"
+                            placeholder="Escreva aqui as respostas do questionário..." required></textarea>
+                        <div class="meta-row">
+                            <div class="help">Escreva com clareza — esta versão será enviada por SMS.</div>
+                            <div class="counter" id="charCount">0 / 1000</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <button type="button" class="btn btn-primary" id="btnSend"><span class="icon"></span>Enviar por
+                        SMS</button>
+
+                    <button type="button" class="btn btn-ghost" id="btnPreview"><span
+                            class="icon"></span>Pré‑visualizar</button>
+
+                    <button type="button" class="btn btn-muted" id="btnCopy">Copiar para Área de Transferência</button>
+
+                    <div style="margin-left:auto;display:flex;gap:8px;align-items:center">
+                        <label style="font-size:12px;color:var(--muted);">Modo:</label>
+                        <select id="sendMode" style="padding:8px;border-radius:8px;border:1px solid rgba(0,0,0,0.06)">
+                            <option value="sms">Abrir app SMS (recomendado)</option>
+                            <option value="mailto">Enviar por E‑mail (fallback)</option>
+                        </select>
+                    </div>
+                </div>
+
+
+            </form>
+        </main>
+    </div>
+
+    <!-- Preview modal -->
+    <div class="preview" id="preview">
+        <div class="box" role="dialog" aria-modal="true" aria-labelledby="previewTitle">
+            <h3 id="previewTitle">Pré‑visualização da Mensagem</h3>
+            <pre id="previewText"></pre>
+            <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:12px">
+                <button class="btn btn-muted" id="closePreview">Fechar</button>
+                <button class="btn btn-primary" id="sendFromPreview">Abrir SMS</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">Mensagem</div>
+
+    <script>
+        // Helpers
+        const $ = function (id) { return document.getElementById(id); };
+        const nome = $("nome"), email = $("email"), telefone = $("telefone"), assunto = $("assunto"), questionario = $("questionario");
+        const btnSend = $("btnSend"), btnPreview = $("btnPreview"), btnCopy = $("btnCopy");
+        const preview = $("preview"), previewText = $("previewText"), closePreview = $("closePreview"), sendFromPreview = $("sendFromPreview");
+        const toast = $("toast"), charCount = $("charCount"), sendMode = $("sendMode");
+
+        // character counter
+        questionario.addEventListener('input', function () {
+            var len = questionario.value.length;
+            if (len > 1000) { questionario.value = questionario.value.substring(0, 1000); len = 1000; }
+            charCount.textContent = len + ' / 1000';
+        });
+
+        // simple validation without regex to avoid escaped characters in storage
+        function isValidEmail(e) {
+            if (!e) return false;
+            var at = e.indexOf('@');
+            if (at < 1) return false;
+            var dot = e.indexOf('.', at + 2);
+            return dot > at;
+        }
+
+        function cleanPhone(p) {
+            if (!p) return '';
+            var s = p.split(' ').join('');
+            s = s.split('-').join('');
+            s = s.split('(').join('');
+            s = s.split(')').join('');
+            return s;
+        }
+
+        function validate() {
+            if (!nome.value.trim()) return 'Preencha o nome.';
+            if (!isValidEmail(email.value.trim())) return 'Email inválido.';
+            var telClean = cleanPhone(telefone.value.trim());
+            if (telClean.length < 8 || telClean.length > 16) return 'Telefone inválido. Use +código e pelo menos 8 dígitos.';
+            if (!assunto.value.trim()) return 'Preencha o assunto.';
+            if (!questionario.value.trim()) return 'Responda o questionário.';
+            return '';
+        }
+
+        function buildMessage() {
+            var parts = [
+                'Nome: ' + nome.value.trim(),
+                'Email: ' + email.value.trim(),
+                'Telefone: ' + telefone.value.trim(),
+                'Assunto: ' + assunto.value.trim(),
+                '',
+                'Respostas:',
+                questionario.value.trim()
+            ];
+            return parts.join(String.fromCharCode(10)); // usa newline sem barra invertida
+        }
+
+        function showToast(msg, time) { if (!time) time = 2200; toast.textContent = msg; toast.classList.add('show'); setTimeout(function () { toast.classList.remove('show'); }, time); }
+
+        btnSend.addEventListener('click', function () {
+            var err = validate(); if (err) { showToast(err); return; }
+            var body = buildMessage();
+            var mode = sendMode.value;
+            var tel = cleanPhone(telefone.value.trim());
+            if (mode === 'sms') {
+                var smsUrl = 'sms:' + tel + '?body=' + encodeURIComponent(body);
+                window.location.href = smsUrl;
+                showToast('A abrir app de SMS...');
+            } else {
+                var subject = encodeURIComponent(assunto.value.trim() || 'Formulário');
+                var mailto = 'mailto:' + email.value.trim() + '?subject=' + subject + '&body=' + encodeURIComponent(body);
+                window.location.href = mailto;
+                showToast('A abrir app de Email...');
+            }
+        });
+
+        btnPreview.addEventListener('click', function () {
+            var err = validate(); if (err) { showToast(err); return; }
+            previewText.textContent = buildMessage();
+            preview.style.display = 'flex';
+        });
+        closePreview.addEventListener('click', function () { preview.style.display = 'none'; });
+        sendFromPreview.addEventListener('click', function () { preview.style.display = 'none'; btnSend.click(); });
+
+        btnCopy.addEventListener('click', function () {
+            var err = validate(); if (err) { showToast(err); return; }
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(buildMessage()).then(function () { showToast('Texto copiado!'); }).catch(function () { showToast('Não foi possível copiar.'); });
+            } else {
+                showToast('Navegador não suporta copiar automaticamente.');
+            }
+        });
+
+        window.addEventListener('keydown', function (e) { if (e.key === 'Escape') preview.style.display = 'none'; });
+
+
+    </script>
+</body>
+
+</html>
