@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="pt">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Página Inicial</title>
+    <!-- Mantive o link para o seu CSS original; pode trocar para a versão modernizada quando quiser -->
+    <link rel="stylesheet" href="pagInicial.css">
+    <!-- Script defer para comportamentos interativos (corrigido para .js em vez de .html) -->
+    <script defer src="pagInicial.js"></script>
+</head>
+
+<body>
+    <header class="site-header" role="banner">
+        <div class="container header-inner">
+            <div class="brand">
+                <a href="/" class="brand-link" aria-label="Ir para a página inicial">
+                    <svg width="36" height="36" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <rect width="24" height="24" rx="5" fill="#0A2342"></rect>
+                        <text x="12" y="16" text-anchor="middle" font-size="12" fill="#FF7F11"
+                            font-family="Arial, Helvetica, sans-serif">GM</text>
+                    </svg>
+                </a>
+                <div>
+                    <h1 class="site-title">Bem‑vindo à Página Inicial</h1>
+                    <p class="lead">Escolha uma das opções abaixo para navegar</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container main-content" id="main" role="main">
+        <section aria-labelledby="menu-title">
+            <h2 id="menu-title" class="visually-hidden">Menu de navegação</h2>
+
+            <nav class="menu" role="navigation" aria-label="Menu principal">
+                <!-- Mantive todos os hrefs originais conforme pedido -->
+                <a href="CV.html" class="btn" title="Ver CV">Ver CV</a>
+                <a href="galeria.html" class="btn" title="Galeria">Galeria</a>
+                <a href="formulario.html" class="btn" title="Formulário">Formulário</a>
+                <a href="login.html" class="btn btn-secundario" title="Sair">↩ Sair</a>
+            </nav>
+
+            <div class="extras" aria-hidden="false">
+                <p class="hint">Dica: use as teclas <kbd>Tab</kbd> e <kbd>Enter</kbd> para navegar pelo menu.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer" role="contentinfo">
+        <div class="container footer-inner">
+            <p>© <span id="year"></span> — Desenvolvido por Gabrio Manuel Bento.</p>
+            <p class="small">Página web</p>
+        </div>
+    </footer>
+
+    <script>
+        // Pequeno script progressivo para melhorar usabilidade (sem mudar links)
+        (function () {
+            try {
+                // Atualiza o ano no rodapé
+                document.getElementById('year').textContent = new Date().getFullYear();
+
+                // Permite ativar o primeiro botão com a tecla '1' para acessibilidade rápida
+                const buttons = Array.from(document.querySelectorAll('.menu .btn'));
+                if (buttons.length) {
+                    document.addEventListener('keydown', function (e) {
+                        // evitar conflito com form inputs
+                        if (e.key >= '1' && e.key <= String(buttons.length) && !/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)) {
+                            const idx = Number(e.key) - 1;
+                            buttons[idx].focus();
+                            buttons[idx].click();
+                        }
+                    });
+                }
+            } catch (err) {
+                // degrade silenciosamente se algo falhar
+                console.warn('Init script pagInicial:', err);
+            }
+        })();
+    </script>
+</body>
+
+</html>

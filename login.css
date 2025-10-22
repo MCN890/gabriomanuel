@@ -1,0 +1,364 @@
+:root {
+    --bg-1: #0A2342;
+    /* azul escuro */
+    --accent: #FF7F11;
+    /* laranja */
+    --accent-2: #FFD60A;
+    /* amarelo usado nos borders */
+    --primary: #0A2342;
+    /* cor do texto no card */
+    --card-bg: rgba(255, 255, 255, 0.98);
+    --success: #2ECC71;
+    --danger: #E53E3E;
+    --muted: #6b7280;
+    --radius-lg: 16px;
+    --radius-md: 10px;
+    --shadow-lg: 0 12px 30px rgba(2, 6, 23, 0.45);
+    --glass-blur: 8px;
+    --max-width: 420px;
+    --gap: 1rem;
+    --transition: 220ms cubic-bezier(.2, .9, .3, 1);
+    --font-sans: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    --contrast-threshold: 4.5;
+}
+
+/* Reset moderno + acessibilidade */
+* {
+    box-sizing: border-box
+}
+
+html,
+body {
+    height: 100%
+}
+
+body {
+    margin: 0;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background: linear-gradient(135deg, var(--bg-1) 0%, #112F4A 45%, var(--accent) 100%);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    min-height: 100vh;
+}
+
+/* Centro / container */
+.container {
+    width: min(var(--max-width), 96vw);
+    background: var(--card-bg);
+    color: var(--primary);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    padding: clamp(1rem, 3.5vw, 2.25rem);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    animation: cardIn var(--transition) both;
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    backdrop-filter: blur(var(--glass-blur));
+}
+
+@keyframes cardIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px) scale(.997)
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1)
+    }
+}
+
+/* Header com logo */
+.container .brand {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.6rem;
+}
+
+.container .brand .logo {
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--bg-1), var(--accent));
+    display: inline-grid;
+    place-items: center;
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.05rem;
+    box-shadow: 0 6px 18px rgba(10, 35, 66, 0.12);
+}
+
+.container h1 {
+    font-size: 1.45rem;
+    margin: 0
+}
+
+.container p.lead {
+    font-size: 0.95rem;
+    color: #4b5563;
+    margin-top: 0.25rem
+}
+
+.container h2 {
+    color: var(--accent);
+    margin: 0.9rem 0
+}
+
+/* Form layout */
+.form {
+    margin-top: 0.6rem;
+    display: grid;
+    gap: var(--gap);
+    text-align: left
+}
+
+.label {
+    font-weight: 600;
+    color: var(--primary);
+    font-size: 0.92rem
+}
+
+.input-wrap {
+    position: relative
+}
+
+.input-wrap input {
+    width: 100%;
+    padding: 0.9rem 1rem;
+    border-radius: var(--radius-md);
+    border: 1.5px solid rgba(10, 35, 66, 0.06);
+    font-size: 1rem;
+    outline: none;
+    transition: box-shadow var(--transition), border-color var(--transition), transform var(--transition);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(250, 250, 250, 0.98));
+}
+
+.input-wrap input:focus {
+    box-shadow: 0 8px 28px rgba(10, 35, 66, 0.06);
+    border-color: var(--accent-2)
+}
+
+.input-wrap input::placeholder {
+    color: #98a0aa
+}
+
+/* Password specific visual */
+input[type="password"] {
+    border: 2px solid rgba(255, 214, 10, 0.18)
+}
+
+input[type="password"]:focus {
+    border-color: var(--success);
+    box-shadow: 0 6px 24px rgba(46, 204, 113, 0.12)
+}
+
+/* Toggle visibilidade */
+.input-wrap .toggle-btn {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    color: var(--muted)
+}
+
+.input-wrap .toggle-btn[aria-pressed="true"] {
+    color: var(--primary)
+}
+
+/* Botões */
+.btn {
+    display: inline-block;
+    width: 100%;
+    padding: 0.95rem 1rem;
+    border-radius: 10px;
+    border: none;
+    background: linear-gradient(90deg, var(--success) 0%, #21b573 50%);
+    color: #fff;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: transform var(--transition), box-shadow var(--transition), filter var(--transition)
+}
+
+.btn:focus-visible {
+    outline: 3px solid rgba(46, 204, 113, 0.16);
+    outline-offset: 3px
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(33, 181, 115, 0.10)
+}
+
+.btn:active {
+    transform: translateY(-1px)
+}
+
+/* Hover alternativo (laranja) */
+.btn.alt-hover {
+    background: linear-gradient(90deg, var(--success) 0%, #21b573 50%)
+}
+
+.btn.alt-hover:hover {
+    background: linear-gradient(90deg, var(--accent) 0%, #ff9b43 100%);
+    color: var(--primary)
+}
+
+/* Disabled state */
+.btn[disabled],
+button[disabled] {
+    opacity: 0.65;
+    cursor: not-allowed;
+    filter: grayscale(10%)
+}
+
+/* Feedbacks */
+.feedback {
+    font-size: 0.92rem;
+    margin-top: 0.28rem;
+    color: var(--muted)
+}
+
+.error {
+    color: var(--danger);
+    font-weight: 700
+}
+
+.success {
+    color: var(--success);
+    font-weight: 700
+}
+
+/* Server-side error block */
+#server-error {
+    margin-top: 0.6rem;
+    padding: 0.65rem;
+    border-radius: 8px;
+    background: linear-gradient(180deg, rgba(229, 62, 62, 0.06), rgba(229, 62, 62, 0.02));
+    color: var(--danger);
+    font-weight: 700
+}
+
+/* Footer links */
+.form-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 0.6rem
+}
+
+.form-footer a {
+    color: var(--bg-1);
+    text-decoration: none;
+    font-size: 0.9rem
+}
+
+.form-footer a:hover {
+    text-decoration: underline
+}
+
+/* Utilities */
+.visually-hidden {
+    position: absolute !important;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+    clip: rect(1px, 1px, 1px, 1px);
+    white-space: nowrap
+}
+
+/* Input states from server or validation */
+.input-error input {
+    border-color: var(--danger) !important;
+    box-shadow: 0 6px 18px rgba(229, 62, 62, 0.08)
+}
+
+.input-success input {
+    border-color: var(--success) !important;
+    box-shadow: 0 8px 22px rgba(46, 204, 113, 0.08)
+}
+
+/* Badge decorativo */
+.container::after {
+    content: "";
+    position: absolute;
+    right: -60px;
+    top: -60px;
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, rgba(255, 127, 17, 0.12), transparent 30%)
+}
+
+/* Noscript helper */
+noscript .container {
+    outline: 3px dashed rgba(0, 0, 0, 0.06)
+}
+
+/* Pequenas responsividades */
+@media (max-width:420px) {
+    .container {
+        padding: 1rem
+    }
+
+    .container .brand .logo {
+        width: 44px;
+        height: 44px
+    }
+
+    .container h1 {
+        font-size: 1.2rem
+    }
+}
+
+/* Respeitar usuários que preferem reduzir animações */
+@media (prefers-reduced-motion: reduce) {
+
+    .container,
+    .btn {
+        transition: none;
+        animation: none
+    }
+}
+
+/* Impressão mínima */
+@media print {
+    body {
+        background: #fff;
+        color: #000
+    }
+
+    .container {
+        box-shadow: none;
+        background: #fff
+    }
+}
+
+/* Alto contraste / modo escuro alternativo (opcional) */
+@media (prefers-contrast: more) {
+    :root {
+        --card-bg: #fff;
+        --primary: #071430
+    }
+
+    .container {
+        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.6)
+    }
+}
+
+/* fim */

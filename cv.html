@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Currículo — Gabrio Manuel Bento</title>
+
+    <!-- mantém teus ficheiros -->
+    <link rel="stylesheet" href="CV.css" />
+    <script defer src="CV.js"></script>
+</head>
+
+<body>
+    <header class="sr-only" aria-hidden="true">
+        <h1>Currículo de Gabrio Manuel Bento</h1>
+    </header>
+
+    <div class="cv-container" id="cv-root">
+        <!-- ASIDE: Perfil (lado esquerdo) -->
+        <aside class="perfil" aria-labelledby="profile-name" role="complementary">
+            <figure class="foto-perfil" aria-hidden="false">
+                <picture>
+                    <source srcset="Fotos/WhatsApp Image 2025-10-15 at 23.24.39_5a7f21e0.jpg 256w" type="image/webp">
+                    <source srcset="Fotos/WhatsApp Image 2025-10-15 at 23.24.39_5a7f21e0.jpg 480w" type="image/jpeg">
+                    <img src="Fotos/WhatsApp Image 2025-10-15 at 23.24.39_5a7f21e0.jpg"
+                        alt="Fotos/WhatsApp Image 2025-10-15 at 23.24.39_5a7f21e0.jpg" class="avatar-img" width="220"
+                        height="220" loading="lazy" decoding="async">
+                </picture>
+
+                <figcaption>
+                    <h2 id="profile-name" class="nome">Gabrio Manuel Bento</h2>
+                </figcaption>
+            </figure>
+
+            <div class="contactos" aria-labelledby="contactos-title">
+                <h3 id="contactos-title" class="visually-hidden">Contactos</h3>
+                <!-- uso de descrição semântica: dl mantém dados intactos -->
+                <dl>
+                    <div>
+                        <dt class="sr-only">Telefone</dt>
+                        <dd>866 073 200 · 834 135 046</dd>
+                    </div>
+                    <div>
+                        <dt class="sr-only">Email principal</dt>
+                        <dd><a href="mailto:gabriombento1@gmail.com" class="contact-email">gabriombento1@gmail.com</a>
+                        </dd>
+                    </div>
+                    <div>
+                        <dt class="sr-only">Email secundário</dt>
+                        <dd><a href="mailto:manuelbentoglg@gmail.com" class="contact-email">manuelbentoglg@gmail.com</a>
+                        </dd>
+                    </div>
+                </dl>
+            </div>
+
+            <div class="slogan" aria-hidden="false">
+                <blockquote>“Em breve irás lembrar de mim com nostalgia”</blockquote>
+            </div>
+
+            <nav class="navegacao" aria-label="Navegação do currículo">
+                <h3 class="visually-hidden">Navegação</h3>
+                <ul>
+                    <li><a href="pagInicial.html" data-key="1">1 — Página Inicial</a></li>
+                    <li><a href="galeria.html" data-key="2">2 — Galeria</a></li>
+                    <li><a href="formulario.html" data-key="3">3 — Formulário</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- MAIN: Conteúdo (lado direito) -->
+        <main class="conteudo" role="main" aria-labelledby="main-heading">
+            <header id="main-heading" class="visually-hidden">Conteúdo do currículo</header>
+
+            <!-- Sobre Mim -->
+            <section class="sobre-mim" aria-labelledby="sobre-heading">
+                <h2 id="sobre-heading">Sobre Mim</h2>
+                <p class="lead">
+                    Sou <strong>Gabrio Manuel Bento</strong>, estudante de programação web no ITC e natural de Maputo,
+                    Moçambique. Estou a iniciar a minha jornada na área da tecnologia, buscando aprender com dedicação
+                    e trazer um pouco da minha identidade moçambicana para os projetos que desenvolvo. Gosto de unir
+                    técnica com estética, criando interfaces que comuniquem com leveza e propósito. Ainda estou a
+                    aprender, mas sigo com curiosidade, disciplina e vontade de evoluir.
+                </p>
+            </section>
+
+            <!-- Percurso Académico -->
+            <section class="percurso" aria-labelledby="percurso-heading">
+                <h2 id="percurso-heading">Percurso Académico</h2>
+
+                <article class="barra" id="cv3" aria-labelledby="cv3-title">
+                    <h3 id="cv3-title" class="sr-only">Técnico de Electricidade Industrial — 90%</h3>
+                    <div class="bar-row">
+                        <span class="bar-label">Técnico de Electricidade Industrial</span>
+                        <div class="grafico" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="90"
+                            data-percent="90">
+                            <span class="fill" style="width:90%">90%</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="barra" id="cv4" aria-labelledby="cv4-title">
+                    <h3 id="cv4-title" class="sr-only">Técnico de Suporte Informático — 100%</h3>
+                    <div class="bar-row">
+                        <span class="bar-label">Técnico de Suporte Informático</span>
+                        <div class="grafico" role="progressbar" aria-valuemin="0" aria-valuemax="100"
+                            aria-valuenow="100" data-percent="100">
+                            <span class="fill" style="width:100%">100%</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="barra" id="cv5" aria-labelledby="cv5-title">
+                    <h3 id="cv5-title" class="sr-only">Técnico de Programação Web — 60%</h3>
+                    <div class="bar-row">
+                        <span class="bar-label">Técnico de Programação Web</span>
+                        <div class="grafico" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="60"
+                            data-percent="60">
+                            <span class="fill" style="width:60%">60%</span>
+                        </div>
+                    </div>
+                </article>
+            </section>
+
+            <!-- Competências Gráficas -->
+            <section class="competencias" aria-labelledby="competencias-heading">
+                <h2 id="competencias-heading">Competências Gráficas</h2>
+
+                <div class="grafico-eixos" aria-hidden="false">
+                    <ul>
+                        <li>Desenho — 100%</li>
+                        <li>Pintura — 70%</li>
+                        <li>Realização de Projetos — 100%</li>
+                        <li>Design Web — 90%</li>
+                    </ul>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal (criado e gerido por JS) - placeholder element -->
+    <div id="cv-modal" class="modal-foto" role="dialog" aria-hidden="true" aria-label="Pré-visualização da foto">
+        <div class="modal-inner" role="document">
+            <!-- imagem será clonada por JS -->
+            <button id="modal-close" class="sr-only" aria-label="Fechar diálogo">Fechar</button>
+            <img alt="" src="" />
+        </div>
+    </div>
+
+    <!-- Rodapé -->
+    <footer class="site-footer" role="contentinfo">
+        <p>Feito por GLG</p>
+    </footer>
+
+    <!-- Script de comportamentos: modal acessível, atalhos numéricos e animação das barras -->
+    <script>
+        (function () {
+            'use strict';
+
+            // Helpers
+            const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const root = document.getElementById('cv-root');
+
+            // Modal logic (accessible)
+            function initModal() {
+                const img = document.querySelector('.foto-perfil img');
+                const modal = document.getElementById('cv-modal');
+                const modalImg = modal.querySelector('img');
+                const closeBtn = modal.querySelector('#modal-close');
+                let lastFocused = null;
+
+                if (!img || !modal || !modalImg) return;
+
+                function openModal() {
+                    lastFocused = document.activeElement;
+                    modalImg.src = img.src;
+                    modalImg.alt = img.alt || 'Foto de perfil';
+                    modal.setAttribute('aria-hidden', 'false');
+                    modal.style.display = 'flex';
+                    // focus management
+                    closeBtn.focus();
+                    document.body.style.overflow = 'hidden';
+                }
+
+                function closeModal() {
+                    modal.setAttribute('aria-hidden', 'true');
+                    modal.style.display = 'none';
+                    modalImg.src = '';
+                    document.body.style.overflow = '';
+                    if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
+                }
+
+                img.addEventListener('click', openModal);
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) closeModal();
+                });
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape' && modal.getAttribute('aria-hidden') === 'false') closeModal();
+                });
+                closeBtn.addEventListener('click', closeModal);
+            }
+
+            // Numeric nav shortcuts (1..n)
+            function initNumericNav() {
+                const links = Array.from(document.querySelectorAll('.navegacao a'));
+                if (!links.length) return;
+                document.addEventListener('keydown', (e) => {
+                    if (e.repeat) return;
+                    if (/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)) return;
+                    if (e.key >= '1' && e.key <= String(links.length)) {
+                        const idx = Number(e.key) - 1;
+                        links[idx].focus();
+                        // open in same way the user would (click), but keep semantics — allow default navigation
+                        links[idx].click();
+                    }
+                });
+            }
+
+            // Animate progress fills from data-percent (respects reduced motion)
+            function initProgressAnimations() {
+                const graf = Array.from(document.querySelectorAll('.grafico'));
+                graf.forEach(g => {
+                    const pct = parseInt(g.getAttribute('data-percent') || g.dataset.percent || '0', 10);
+                    const fill = g.querySelector('.fill');
+                    if (!fill) return;
+                    if (prefersReduced) {
+                        fill.style.width = pct + '%';
+                        g.setAttribute('aria-valuenow', String(pct));
+                        return;
+                    }
+                    // simple requestAnimationFrame animation
+                    requestAnimationFrame(() => {
+                        fill.style.width = pct + '%';
+                        g.setAttribute('aria-valuenow', String(pct));
+                    });
+                });
+            }
+
+            // Init on DOM ready
+            document.addEventListener('DOMContentLoaded', () => {
+                try {
+                    initModal();
+                    initNumericNav();
+                    initProgressAnimations();
+                } catch (err) {
+                    console.warn('CV init error', err);
+                }
+            });
+        })();
+    </script>
+</body>
+
+</html>

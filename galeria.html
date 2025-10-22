@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GLG</title>
+    <link rel="stylesheet" href="galeria.css">
+    <script defer src="galeria.js"></script>
+</head>
+
+<body>
+
+    <header>
+        <h1>Galeria Multimédia</h1>
+        <p>Um reflexo visual e sonoro da criatividade</p>
+    </header>
+
+    <!-- PERFIL -->
+    <section class="secao-perfil">
+        <h2>Perfil</h2>
+        <div class="perfil">
+            <img src="Fotos/perfil.jpg" alt="Foto de Perfil de Gabrio Manuel Bento">
+            <div class="perfil-info">
+                <h3>Gabrio Manuel Bento</h3>
+                <p>Em um futuro próximo... Vais falar do meu nome com imensa nostalgia.</p>
+            </div>
+        </div>
+
+        <!-- Navegação -->
+        <nav class="perfil-navegacao">
+            <ul>
+                <li><a href="pagInicial.html" class="btn-nav">Página Inicial</a></li>
+                <li><a href="cv.html" class="btn-nav">CV</a></li>
+                <li><a href="formulario.html" class="btn-nav">Formulário</a></li>
+            </ul>
+        </nav>
+    </section>
+
+    <!-- ====== SEÇÃO FOTOS MODERNIZADA & APRIMORADA ====== -->
+    <section aria-labelledby="fotos-title" class="gallery-section">
+        <h2 id="fotos-title">Fotos</h2>
+
+        <div class="fotos photo-grid" role="list">
+            <!-- Exemplo de item: substitua src / data-fullsrc / alt / caption conforme necessário -->
+            <figure class="photo-card" role="listitem" data-index="0">
+                <img src="Fotos/1.jpg" data-fullsrc="Fotos/1.jpg" alt="Descrição da foto 1" loading="lazy" tabindex="0"
+                    data-caption="Um presente de aniversário de última hora🤣
+" onload="this.classList.add('loaded')">
+                <figcaption class="caption">
+                    <div class="caption-left">
+                        <div class="caption-text">2025</div>
+                        <div class="caption-sub">Owl birthday</div>
+                    </div>
+                    <div class="caption-right">
+                        <button class="view-btn" aria-label="Abrir Foto 1">Ampliar</button>
+                    </div>
+                </figcaption>
+            </figure>
+
+            <figure class="photo-card" role="listitem" data-index="1">
+                <img src="Fotos/2.jpg" data-fullsrc="Fotos/2.jpg" alt="Descrição da foto 2" loading="lazy" tabindex="0"
+                    data-caption="Uma crítica ao estado mais natural do ser humano, maldade"
+                    onload="this.classList.add('loaded')">
+                <figcaption class="caption">
+                    <div class="caption-left">
+                        <div class="caption-text">2024</div>
+                        <div class="caption-sub">What have you done?</div>
+                    </div>
+                    <div class="caption-right">
+                        <button class="view-btn" aria-label="Abrir Foto 2">Ampliar</button>
+                    </div>
+                </figcaption>
+            </figure>
+
+            <figure class="photo-card" role="listitem" data-index="2">
+                <img src="Fotos/3.jpg" data-fullsrc="Fotos/3.jpg" alt="Descrição da foto 3" loading="lazy" tabindex="0"
+                    data-caption="Foi em um estágio de auto reflexão sobre a minha capacidade de expressar ou mostrar afecto de uma forma orgânica sem ser forçado"
+                    onload="this.classList.add('loaded')">
+                <figcaption class="caption">
+                    <div class="caption-left">
+                        <div class="caption-text">2020</div>
+                        <div class="caption-sub">Pinoqhio heart</div>
+                    </div>
+                    <div class="caption-right">
+                        <button class="view-btn" aria-label="Abrir Foto 3">Ampliar</button>
+                    </div>
+                </figcaption>
+            </figure>
+
+            <figure class="photo-card" role="listitem" data-index="3">
+                <img src="Fotos/4.jpg" data-fullsrc="Fotos/4.jpg" alt="Descrição da foto 4" loading="lazy" tabindex="0"
+                    data-caption="O dia que percebi que até os sorrisos mais calorosos carregam as feridas mais profundas."
+                    onload="this.classList.add('loaded')">
+                <figcaption class="caption">
+                    <div class="caption-left">
+                        <div class="caption-text">2024</div>
+                        <div class="caption-sub">Gloomy gaze</div>
+                    </div>
+                    <div class="caption-right">
+                        <button class="view-btn" aria-label="Abrir Foto 4">Ampliar</button>
+                    </div>
+                </figcaption>
+            </figure>
+        </div>
+    </section>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const gallery = document.querySelector('.fotos');
+            const figures = Array.from(gallery.querySelectorAll('.photo-card'));
+
+            // Event delegation: clique nos botões "Ampliar" ou Enter/Space na miniatura
+            gallery.addEventListener('click', (e) => {
+                const btn = e.target.closest('.view-btn');
+                if (btn) {
+                    const figure = btn.closest('.photo-card');
+                    openViewer(Number(figure.dataset.index));
+                    return;
+                }
+                // caso o usuário clique diretamente na imagem
+                const img = e.target.closest('img');
+                if (img && gallery.contains(img)) {
+                    const figure = img.closest('.photo-card');
+                    openViewer(Number(figure.dataset.index));
+                }
+            });
+
+            // Abrir com Enter/Space quando a imagem estiver focada
+            gallery.addEventListener('keydown', (e) => {
+                if ((e.key === 'Enter' || e.key === ' ') && (e.target.tagName === 'IMG')) {
+                    e.preventDefault();
+                    const figure = e.target.closest('.photo-card');
+                    openViewer(Number(figure.dataset.index));
+                }
+            });
+
+            function openViewer(startIndex) {
+                let currentIndex = clampIndex(startIndex);
+                const previouslyFocused = document.activeElement;
+
+                // overlay/diálogo
+                const overlay = document.createElement('div');
+                overlay.setAttribute('role', 'dialog');
+                overlay.setAttribute('aria-modal', 'true');
+                overlay.setAttribute('aria-label', 'Visualizador de imagens');
+                overlay.className = 'photo-overlay';
+                Object.assign(overlay.style, {
+                    position: 'fixed',
+                    inset: 0,
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    background: 'rgba(0,0,0,0.9)',
+                    zIndex: 9999,
+                    cursor: 'zoom-out',
+                });
+
+                // content container (evita fechar ao clicar na imagem)
+                const content = document.createElement('div');
+                content.className = 'photo-overlay-content';
+                Object.assign(content.style, {
+                    maxWidth: '95vw',
+                    maxHeight: '95vh',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: '12px',
+                    outline: 'none',
+                });
+                content.tabIndex = -1;
+
+                // imagem
+                const fullImg = document.createElement('img');
+                fullImg.className = 'photo-overlay-img';
+                Object.assign(fullImg.style, {
+                    maxWidth: '100%',
+                    maxHeight: '80vh',
+                    borderRadius: '6px',
+                    boxShadow: '0 10px 30px rgba(0,0,0,0.6)',
+                    cursor: 'default'
+                });
+
+                // caption area (usamos o figcaption original para manter os dados idênticos)
+                const captionBox = document.createElement('div');
+                captionBox.className = 'photo-overlay-caption';
+                Object.assign(captionBox.style, {
+                    width: 'min(90vw, 960px)',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    color: '#fff',
+                    fontSize: '0.95rem',
+                    gap: '8px',
+                });
+
+                // criar botões de navegação / fechar
+                const closeBtn = document.createElement('button');
+                closeBtn.className = 'photo-close-btn';
+                closeBtn.type = 'button';
+                closeBtn.setAttribute('aria-label', 'Fechar visualizador');
+                closeBtn.innerText = 'Fechar';
+                Object.assign(closeBtn.style, {
+                    background: 'transparent',
+                    border: '1px solid rgba(255,255,255,0.2)',
+                    color: '#fff',
+                    padding: '6px 10px',
+                    borderRadius: '8px',
+                    cursor: 'pointer'
+                });
+
+                const prevBtn = document.createElement('button');
+                prevBtn.className = 'photo-prev-btn';
+                prevBtn.type = 'button';
+                prevBtn.setAttribute('aria-label', 'Imagem anterior');
+                prevBtn.innerText = '‹';
+                Object.assign(prevBtn.style, {
+                    fontSize: '1.6rem',
+                    background: 'transparent',
+                    border: 'none',
+                    color: '#fff',
+                    padding: '6px 10px',
+                    cursor: 'pointer',
+                    userSelect: 'none'
+                });
+
+                const nextBtn = document.createElement('button');
+                nextBtn.className = 'photo-next-btn';
+                nextBtn.type = 'button';
+                nextBtn.setAttribute('aria-label', 'Próxima imagem');
+                nextBtn.innerText = '›';
+                Object.assign(nextBtn.style, {
+                    fontSize: '1.6rem',
+                    background: 'transparent',
+                    border: 'none',
+                    color: '#fff',
+                    padding: '6px 10px',
+                    cursor: 'pointer',
+                    userSelect: 'none'
+                });
+
+                // área de informações (clonamos o figcaption original para manter exactamente o conteúdo)
+                const originalFig = figures[currentIndex];
+                const originalCaption = originalFig ? originalFig.querySelector('.caption') : null;
+                const captionClone = originalCaption ? originalCaption.cloneNode(true) : document.createElement('div');
+                // Ajustes visuais mínimos
+                captionClone.classList.add('caption-clone');
+                Object.assign(captionClone.style, { color: '#fff' });
+
+                // composicao
+                captionBox.appendChild(prevBtn);
+                captionBox.appendChild(captionClone);
+                captionBox.appendChild(nextBtn);
+
+                content.appendChild(fullImg);
+                content.appendChild(captionBox);
+                content.appendChild(closeBtn);
+                overlay.appendChild(content);
+
+                // Previne scroll de fundo
+                const previousBodyOverflow = document.body.style.overflow;
+                document.body.style.overflow = 'hidden';
+
+                // adiciona ao DOM
+                document.body.appendChild(overlay);
+                // focus management
+                closeBtn.focus();
+
+                // impedir clique em content de fechar
+                content.addEventListener('click', (ev) => ev.stopPropagation());
+
+                // fecha ao clicar no overlay (fora do content)
+                overlay.addEventListener('click', closeViewer);
+
+                // handlers
+                function updateView(index) {
+                    currentIndex = clampIndex(index);
+                    const figure = figures[currentIndex];
+                    const img = figure.querySelector('img');
+
+                    // pega fonte completa ou src
+                    const src = img.getAttribute('data-fullsrc') || img.src;
+                    fullImg.src = src;
+                    fullImg.alt = img.alt || '';
+                    fullImg.setAttribute('data-index', currentIndex);
+
+                    // atualizar caption clonada (substitui pelo figcaption do index atual)
+                    const newCaption = figure.querySelector('.caption').cloneNode(true);
+                    // conservar estilo
+                    newCaption.classList.add('caption-clone');
+                    // substitui
+                    captionBox.replaceChild(newCaption, captionClone);
+                    // atualiza a referência local para o próximo replace
+                    // (manter consistência de variáveis)
+                    // (nota: não reassignamos captionClone constante - usamos childNodes)
+                    // (aqui simples: atualiza captionCloneRef)
+                    captionCloneRef = newCaption;
+
+                    // preload adjacentes
+                    preloadIndex(currentIndex + 1);
+                    preloadIndex(currentIndex - 1);
+                }
+
+                // referência que será atualizada
+                let captionCloneRef = captionClone;
+
+                function preloadIndex(i) {
+                    const idx = clampIndex(i);
+                    const figure = figures[idx];
+                    if (!figure) return;
+                    const thumb = figure.querySelector('img');
+                    const src = thumb.getAttribute('data-fullsrc') || thumb.src;
+                    const p = new Image();
+                    p.src = src;
+                }
+
+                // keyboard navigation
+                function keyHandler(e) {
+                    if (e.key === 'Escape') {
+                        e.preventDefault();
+                        closeViewer();
+                    } else if (e.key === 'ArrowLeft') {
+                        e.preventDefault();
+                        navigate(-1);
+                    } else if (e.key === 'ArrowRight') {
+                        e.preventDefault();
+                        navigate(1);
+                    } else if (e.key === 'Tab') {
+                        // simple focus trap: keep focus inside content
+                        const focusable = overlay.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+                        if (focusable.length === 0) return;
+                        const first = focusable[0];
+                        const last = focusable[focusable.length - 1];
+                        if (e.shiftKey && document.activeElement === first) {
+                            e.preventDefault();
+                            last.focus();
+                        } else if (!e.shiftKey && document.activeElement === last) {
+                            e.preventDefault();
+                            first.focus();
+                        }
+                    }
+                }
+
+                // swipe support (touch)
+                let touchStartX = 0;
+                function touchStartHandler(e) {
+                    if (e.touches && e.touches.length === 1) {
+                        touchStartX = e.touches[0].clientX;
+                    }
+                }
+                function touchEndHandler(e) {
+                    if (!e.changedTouches || e.changedTouches.length === 0) return;
+                    const dx = e.changedTouches[0].clientX - touchStartX;
+                    const threshold = 40; // px
+                    if (dx > threshold) navigate(-1);
+                    if (dx < -threshold) navigate(1);
+                }
+
+                // navegar
+                function navigate(delta) {
+                    updateView(currentIndex + delta);
+                }
+
+                // prev/next click
+                prevBtn.addEventListener('click', (e) => { e.stopPropagation(); navigate(-1); });
+                nextBtn.addEventListener('click', (e) => { e.stopPropagation(); navigate(1); });
+                closeBtn.addEventListener('click', (e) => { e.stopPropagation(); closeViewer(); });
+
+                // image error handling
+                fullImg.addEventListener('error', () => {
+                    fullImg.alt = 'Erro ao carregar a imagem';
+                    fullImg.src = '';
+                    // exibe aviso simples no caption
+                    const errNotice = document.createElement('div');
+                    errNotice.textContent = 'Não foi possível carregar a imagem.';
+                    errNotice.style.opacity = '0.9';
+                    errNotice.style.padding = '6px 10px';
+                    errNotice.style.borderRadius = '6px';
+                    errNotice.style.background = 'rgba(0,0,0,0.4)';
+                    errNotice.style.color = '#fff';
+                    captionBox.appendChild(errNotice);
+                });
+
+                // adiciona listeners globais
+                document.addEventListener('keydown', keyHandler);
+                overlay.addEventListener('touchstart', touchStartHandler, { passive: true });
+                overlay.addEventListener('touchend', touchEndHandler, { passive: true });
+
+                // inicializa visualização
+                updateView(currentIndex);
+
+                // função de fechamento com limpeza
+                function closeViewer() {
+                    // remove listeners
+                    document.removeEventListener('keydown', keyHandler);
+                    overlay.removeEventListener('touchstart', touchStartHandler);
+                    overlay.removeEventListener('touchend', touchEndHandler);
+                    prevBtn.removeEventListener('click', navigate);
+                    nextBtn.removeEventListener('click', navigate);
+                    // restaura scroll
+                    document.body.style.overflow = previousBodyOverflow || '';
+                    // remove do DOM
+                    if (document.body.contains(overlay)) document.body.removeChild(overlay);
+                    // restaura foco
+                    try { if (previouslyFocused) previouslyFocused.focus(); } catch (err) { /* ignore */ }
+                }
+            }
+
+            function clampIndex(i) {
+                const n = figures.length;
+                if (n === 0) return 0;
+                // wrap around
+                return ((i % n) + n) % n;
+            }
+        });
+    </script>
+
+
+
+    <!-- ====== SEÇÃO VÍDEOS ADAPTADA AO ESTILO GLOBAL (encapsulada) ====== -->
+    <section id="videos-section" class="videos-section" role="region" aria-labelledby="videos-title">
+        <h2 id="videos-title">Vídeos</h2>
+
+        <div class="videos video-grid" role="list">
+            <!-- Item de exemplo 1 -->
+            <figure class="video-card" role="listitem" data-index="0">
+                <video class="thumb-video" controls preload="metadata" poster="Fotos/kendrick.jpg"
+                    data-fullsrc="videos/WhatsApp Video 2025-10-19 at 23.00.55_fc013352.mp4" tabindex="0"
+                    aria-label="The GOAT" data-caption="Um vídeo rápido de um dos melhores">
+                    <source src="Videos/1.mp4" type="video/mp4">
+                    Seu navegador não suporta o elemento de vídeo.
+                </video>
+
+                <figcaption class="caption">
+                    <div class="caption-left">
+                        <div class="caption-text">2023-EDIT</div>
+                        <div class="caption-sub">Kendrick Fn Lamar</div>
+                    </div>
+
+                    <div class="caption-right">
+                        <button class="play-btn"
+                            aria-label="videos/WhatsApp Video 2025-10-19 at 23.00.55_fc013352.mp4">Reproduzir</button>
+                        <button class="view-btn"
+                            aria-label="videos/WhatsApp Video 2025-10-19 at 23.00.55_fc013352.mp4">Ampliar</button>
+                        <a class="download-btn" href="videos/WhatsApp Video 2025-10-19 at 23.00.55_fc013352.mp4"
+                            download aria-label="videos/WhatsApp Video 2025-10-19 at 23.00.55_fc013352.mp4">Baixar</a>
+                    </div>
+                </figcaption>
+            </figure>
+
+            <!-- Item de exemplo 2 -->
+            <figure class="video-card" role="listitem" data-index="1">
+                <video class="thumb-video" controls preload="metadata" poster="Fotos/maxedmix.jpg"
+                    data-fullsrc="videos/WhatsApp Video 2025-10-19 at 23.00.59_fc024105.mp4" tabindex="0"
+                    aria-label="My frtsssss" data-caption="Os meus favoritos">
+                    <source src="videos/WhatsApp Video 2025-10-19 at 23.00.59_fc024105.mp4" type="video/mp4">
+                    Seu navegador não suporta o elemento de vídeo.
+                </video>
+
+                <figcaption class="caption">
+                    <div class="caption-left">
+                        <div class="caption-text">2024-EDIT</div>
+                        <div class="caption-sub">RAP LEGENDS</div>
+                    </div>
+
+                    <div class="caption-right">
+                        <button class="play-btn"
+                            aria-label="videos/WhatsApp Video 2025-10-19 at 23.00.59_fc024105.mp4">Reproduzir</button>
+                        <button class="view-btn"
+                            aria-label="videos/WhatsApp Video 2025-10-19 at 23.00.59_fc024105.mp4">Ampliar</button>
+                        <a class="download-btn" href="videos/WhatsApp Video 2025-10-19 at 23.00.59_fc024105.mp4"
+                            download aria-label="videos/WhatsApp Video 2025-10-19 at 23.00.59_fc024105.mp4">Baixar</a>
+                    </div>
+                </figcaption>
+            </figure>
+
+            <!-- Item de exemplo 3 -->
+            <figure class="video-card" role="listitem" data-index="2">
+                <video class="thumb-video" controls preload="metadata" poster="Fotos/trap.jpg"
+                    data-fullsrc="videos/WhatsApp Video 2025-10-19 at 23.01.00_51147864.mp4" tabindex="0"
+                    aria-label="I like me better" data-caption="Estágio de autorreflexão sobre afecto e expressão.">
+                    <source src="videos/WhatsApp Video 2025-10-19 at 23.01.00_51147864.mp4" type="video/mp4">
+                    Seu navegador não suporta o elemento de vídeo.
+                </video>
+
+                <figcaption class="caption">
+                    <div class="caption-left">
+                        <div class="caption-text">2020-EDIT</div>
+                        <div class="caption-sub">21</div>
+                    </div>
+
+                    <div class="caption-right">
+                        <button class="play-btn"
+                            aria-label="videos/WhatsApp Video 2025-10-19 at 23.01.00_51147864.mp4">Reproduzir</button>
+                        <button class="view-btn"
+                            aria-label="videos/WhatsApp Video 2025-10-19 at 23.01.00_51147864.mp4">Ampliar</button>
+                        <a class="download-btn" href="videos/WhatsApp Video 2025-10-19 at 23.01.00_51147864.mp4"
+                            download aria-label="videos/WhatsApp Video 2025-10-19 at 23.01.00_51147864.mp4">Baixar</a>
+                    </div>
+                </figcaption>
+            </figure>
+
+            <!-- Item de exemplo 4 -->
+            <figure class="video-card" role="listitem" data-index="3">
+                <video class="thumb-video" controls preload="metadata" poster="Fotos/rango.jpg"
+                    data-fullsrc="videos/WhatsApp Video 2025-10-19 at 23.01.07_6c8a1477.mp4" tabindex="0"
+                    aria-label="Um filme animado unico" data-caption="Uma obra prima animada">
+                    <source src="videos/WhatsApp Video 2025-10-19 at 23.01.07_6c8a1477.mp4" type="video/mp4">
+                    Seu navegador não suporta o elemento de vídeo.
+                </video>
+
+                <figcaption class="caption">
+                    <div class="caption-left">
+                        <div class="caption-text">2025-EDIT</div>
+                        <div class="caption-sub">RANGO</div>
+                    </div>
+
+                    <div class="caption-right">
+                        <button class="play-btn"
+                            aria-label="videos/WhatsApp Video 2025-10-19 at 23.01.07_6c8a1477.mp4">Reproduzir</button>
+                        <button class="view-btn"
+                            aria-label="videos/WhatsApp Video 2025-10-19 at 23.01.07_6c8a1477.mp4">Ampliar</button>
+                        <a class="download-btn" href="videos/WhatsApp Video 2025-10-19 at 23.01.07_6c8a1477.mp4"
+                            download aria-label="Baixar Vídeo 4">Baixar</a>
+                    </div>
+                </figcaption>
+            </figure>
+        </div>
+    </section>
+
+    <!-- Colar este script no fim do <body> (após o HTML da galeria de vídeos) -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const grid = document.querySelector('.videos.video-grid');
+            if (!grid) return;
+
+            const cards = Array.from(grid.querySelectorAll('.video-card'));
+
+            /* --- Helpers --- */
+            const clamp = i => {
+                const n = cards.length || 1;
+                return ((i % n) + n) % n;
+            };
+
+            const pauseAllExcept = (exceptVideo) => {
+                cards.forEach(c => {
+                    const v = c.querySelector('video');
+                    if (v && v !== exceptVideo) {
+                        try { v.pause(); } catch (e) { }
+                    }
+                });
+            };
+
+            /* --- Add big play overlay button (visual) to each card if missing) --- */
+            cards.forEach(card => {
+                if (!card.querySelector('.play-overlay')) {
+                    const overlay = document.createElement('div');
+                    overlay.className = 'play-overlay';
+                    // allow overlay to be clickable only on the big-play button
+                    overlay.style.pointerEvents = 'none';
+
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.className = 'big-play';
+                    btn.setAttribute('aria-label', 'Reproduzir vídeo');
+                    btn.innerHTML = '▶';
+                    // make button clickable
+                    btn.style.pointerEvents = 'auto';
+
+                    // put button inside overlay
+                    overlay.appendChild(btn);
+                    card.appendChild(overlay);
+
+                    // click => toggle inline play
+                    btn.addEventListener('click', (ev) => {
+                        ev.stopPropagation();
+                        const v = card.querySelector('video');
+                        togglePlayInline(v, card);
+                    });
+                }
+            });
+
+            /* --- Inline play toggle with playing class management --- */
+            function togglePlayInline(videoEl, cardEl) {
+                if (!videoEl) return;
+                if (videoEl.paused) {
+                    pauseAllExcept(videoEl);
+                    videoEl.play().catch(() => {/* autoplay blocked: user must interact */ });
+                } else {
+                    videoEl.pause();
+                }
+                // ensure playing class will be managed by event listeners below
+            }
+
+            /* --- Keep track of playing state per card (listen to play/pause events) --- */
+            cards.forEach(card => {
+                const v = card.querySelector('video');
+                if (!v) return;
+                v.addEventListener('play', () => {
+                    // pause others
+                    pauseAllExcept(v);
+                    card.classList.add('playing');
+                    const big = card.querySelector('.big-play');
+                    if (big) big.classList.add('pulse');
+                });
+                v.addEventListener('pause', () => {
+                    card.classList.remove('playing');
+                    const big = card.querySelector('.big-play');
+                    if (big) big.classList.remove('pulse');
+                });
+                // if video ends remove playing
+                v.addEventListener('ended', () => {
+                    card.classList.remove('playing');
+                    const big = card.querySelector('.big-play');
+                    if (big) big.classList.remove('pulse');
+                });
+            });
+
+            /* --- Delegated clicks on grid: play-btn / view-btn / thumb-video --- */
+            grid.addEventListener('click', (e) => {
+                const playBtn = e.target.closest('.play-btn');
+                if (playBtn) {
+                    const card = playBtn.closest('.video-card');
+                    const v = card.querySelector('video');
+                    togglePlayInline(v, card);
+                    return;
+                }
+
+                const viewBtn = e.target.closest('.view-btn');
+                if (viewBtn) {
+                    const card = viewBtn.closest('.video-card');
+                    openModalForIndex(Number(card.dataset.index || cards.indexOf(card)));
+                    return;
+                }
+
+                // clicking the <video> element opens modal (thumb click)
+                const thumb = e.target.closest('video.thumb-video');
+                if (thumb && grid.contains(thumb)) {
+                    const card = thumb.closest('.video-card');
+                    openModalForIndex(Number(card.dataset.index || cards.indexOf(card)));
+                    return;
+                }
+            });
+
+            /* Enter / Space on focused video should open modal (not play inline) */
+            grid.addEventListener('keydown', (e) => {
+                const isSpace = e.key === ' ' || e.code === 'Space';
+                const isEnter = e.key === 'Enter';
+                if ((isSpace || isEnter) && document.activeElement && document.activeElement.matches('video.thumb-video')) {
+                    e.preventDefault();
+                    const card = document.activeElement.closest('.video-card');
+                    openModalForIndex(Number(card.dataset.index || cards.indexOf(card)));
+                }
+            });
+
+            /* pause all when tab hidden */
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) pauseAllExcept(null);
+            });
+
+            /* ===== Modal player implementation ===== */
+            let modalOverlay = null;
+            let currentIndex = 0;
+            let previouslyFocused = null;
+
+            function openModalForIndex(idx) {
+                currentIndex = clamp(idx);
+                previouslyFocused = document.activeElement;
+
+                // prevent multiple modals
+                if (modalOverlay) return;
+
+                // create overlay
+                modalOverlay = document.createElement('div');
+                modalOverlay.className = 'video-modal-overlay';
+                modalOverlay.setAttribute('role', 'dialog');
+                modalOverlay.setAttribute('aria-modal', 'true');
+                modalOverlay.setAttribute('aria-label', 'Visualizador de vídeos');
+
+                // modal container
+                const modal = document.createElement('div');
+                modal.className = 'video-modal';
+                modalOverlay.appendChild(modal);
+
+                // player wrap
+                const wrap = document.createElement('div');
+                wrap.className = 'player-wrap';
+                modal.appendChild(wrap);
+
+                // video element (use data-fullsrc or source src)
+                const vid = document.createElement('video');
+                vid.setAttribute('controls', '');
+                vid.setAttribute('playsinline', '');
+                vid.setAttribute('preload', 'metadata');
+                vid.style.maxHeight = '72vh';
+                vid.style.background = '#000';
+                wrap.appendChild(vid);
+
+                // controls area
+                const controls = document.createElement('div');
+                controls.className = 'modal-controls';
+                modal.appendChild(controls);
+
+                const left = document.createElement('div');
+                left.className = 'left';
+                controls.appendChild(left);
+
+                const right = document.createElement('div');
+                right.className = 'right';
+                controls.appendChild(right);
+
+                // buttons: prev, play/pause, next
+                const prevBtn = document.createElement('button');
+                prevBtn.className = 'modal-btn';
+                prevBtn.type = 'button';
+                prevBtn.setAttribute('aria-label', 'Vídeo anterior');
+                prevBtn.textContent = '‹';
+                left.appendChild(prevBtn);
+
+                const playBtn = document.createElement('button');
+                playBtn.className = 'modal-btn primary';
+                playBtn.type = 'button';
+                playBtn.setAttribute('aria-label', 'Play/Pause');
+                playBtn.textContent = 'Play';
+                left.appendChild(playBtn);
+
+                const nextBtn = document.createElement('button');
+                nextBtn.className = 'modal-btn';
+                nextBtn.type = 'button';
+                nextBtn.setAttribute('aria-label', 'Próximo vídeo');
+                nextBtn.textContent = '›';
+                left.appendChild(nextBtn);
+
+                // right: pip, download, close
+                const pipBtn = document.createElement('button');
+                pipBtn.className = 'modal-btn';
+                pipBtn.type = 'button';
+                pipBtn.setAttribute('aria-label', 'Picture in Picture');
+                pipBtn.textContent = 'PIP';
+                right.appendChild(pipBtn);
+
+                const downloadAnchor = document.createElement('a');
+                downloadAnchor.className = 'modal-btn';
+                downloadAnchor.setAttribute('download', '');
+                downloadAnchor.textContent = 'Baixar';
+                downloadAnchor.href = '#';
+                right.appendChild(downloadAnchor);
+
+                const closeBtn = document.createElement('button');
+                closeBtn.className = 'modal-btn';
+                closeBtn.type = 'button';
+                closeBtn.setAttribute('aria-label', 'Fechar visualizador');
+                closeBtn.textContent = 'Fechar';
+                right.appendChild(closeBtn);
+
+                // caption & index
+                const captionEl = document.createElement('div');
+                captionEl.className = 'modal-caption';
+                modal.appendChild(captionEl);
+
+                const indexEl = document.createElement('div');
+                indexEl.className = 'modal-index';
+                modal.appendChild(indexEl);
+
+                // append overlay to body
+                document.body.appendChild(modalOverlay);
+
+                // prevent background scroll
+                const previousBodyOverflow = document.body.style.overflow;
+                document.body.style.overflow = 'hidden';
+
+                // click outside to close
+                modalOverlay.addEventListener('click', (ev) => {
+                    if (ev.target === modalOverlay) closeModal();
+                });
+
+                // button handlers
+                prevBtn.addEventListener('click', (ev) => { ev.preventDefault(); navigate(-1); });
+                nextBtn.addEventListener('click', (ev) => { ev.preventDefault(); navigate(1); });
+                playBtn.addEventListener('click', () => {
+                    if (vid.paused) vid.play().catch(() => { }); else vid.pause();
+                });
+                closeBtn.addEventListener('click', closeModal);
+
+                // pip handler (if available)
+                pipBtn.addEventListener('click', async () => {
+                    try {
+                        if ('pictureInPictureEnabled' in document && document.pictureInPictureEnabled) {
+                            if (document.pictureInPictureElement) {
+                                await document.exitPictureInPicture();
+                            } else {
+                                await vid.requestPictureInPicture();
+                            }
+                        } else {
+                            // tiny feedback: flash disabled state
+                            pipBtn.disabled = true;
+                            setTimeout(() => pipBtn.disabled = false, 700);
+                        }
+                    } catch (err) { /* ignore PIP errors */ }
+                });
+
+                // keyboard handling
+                function keyHandler(e) {
+                    if (e.key === 'Escape') { e.preventDefault(); closeModal(); }
+                    else if (e.key === 'ArrowLeft') { e.preventDefault(); navigate(-1); }
+                    else if (e.key === 'ArrowRight') { e.preventDefault(); navigate(1); }
+                    else if (e.key === ' ' || e.code === 'Space') {
+                        // when modal open, space toggles play/pause
+                        e.preventDefault();
+                        if (vid.paused) vid.play().catch(() => { }); else vid.pause();
+                    }
+                }
+                document.addEventListener('keydown', keyHandler);
+
+                // swipe support for touch
+                let touchStartX = 0;
+                modalOverlay.addEventListener('touchstart', (ev) => {
+                    if (ev.touches && ev.touches[0]) touchStartX = ev.touches[0].clientX;
+                }, { passive: true });
+                modalOverlay.addEventListener('touchend', (ev) => {
+                    if (!ev.changedTouches || !ev.changedTouches[0]) return;
+                    const dx = ev.changedTouches[0].clientX - touchStartX;
+                    if (dx > 40) navigate(-1);
+                    if (dx < -40) navigate(1);
+                }, { passive: true });
+
+                // update view function
+                function updateView() {
+                    const card = cards[currentIndex];
+                    const thumb = card.querySelector('video.thumb-video');
+                    const full = thumb.getAttribute('data-fullsrc') || (thumb.querySelector('source') ? thumb.querySelector('source').src : '');
+                    const caption = thumb.getAttribute('data-caption') || card.querySelector('.caption .caption-sub')?.textContent || '';
+                    vid.src = full || '';
+                    vid.poster = thumb.getAttribute('poster') || '';
+                    captionEl.textContent = caption;
+                    indexEl.textContent = `${currentIndex + 1} / ${cards.length}`;
+                    downloadAnchor.href = full || '#';
+                    // attempt to autoplay (may be blocked)
+                    vid.currentTime = 0;
+                    vid.play().catch(() => { /* user gesture required */ });
+                    // preload adjacent
+                    preloadIndex(currentIndex + 1);
+                    preloadIndex(currentIndex - 1);
+                }
+
+                // navigate helper
+                function navigate(delta) {
+                    currentIndex = clamp(currentIndex + delta);
+                    updateView();
+                }
+
+                // preload helper
+                function preloadIndex(i) {
+                    const idx = clamp(i);
+                    const card = cards[idx];
+                    if (!card) return;
+                    const v = card.querySelector('video.thumb-video');
+                    const src = v && (v.getAttribute('data-fullsrc') || (v.querySelector('source') ? v.querySelector('source').src : ''));
+                    if (!src) return;
+                    const link = document.createElement('link');
+                    link.rel = 'preload';
+                    link.as = 'video';
+                    link.href = src;
+                    document.head.appendChild(link);
+                    // cleanup later to avoid DOM pollution
+                    setTimeout(() => link.remove(), 60000);
+                }
+
+                // vid events to sync play/pause text & pause other inline videos
+                vid.addEventListener('play', () => {
+                    playBtn.textContent = 'Pausar';
+                    pauseAllExcept(vid);
+                });
+                vid.addEventListener('pause', () => { playBtn.textContent = 'Play'; });
+
+                // cleanup / close modal
+                function closeModal() {
+                    try { vid.pause(); } catch (e) { }
+                    document.removeEventListener('keydown', keyHandler);
+                    document.body.style.overflow = previousBodyOverflow || '';
+                    if (modalOverlay && modalOverlay.parentNode) modalOverlay.parentNode.removeChild(modalOverlay);
+                    modalOverlay = null;
+                    // restore focus
+                    try { if (previouslyFocused) previouslyFocused.focus(); } catch (e) { }
+                }
+
+                // initialize view
+                updateView();
+                // focus the close or play button for accessibility
+                playBtn.focus();
+            }
+
+            // end of openModalForIndex
+
+            /* Expose small API (optional) */
+            window.__videoGallery = {
+                open: openModalForIndex,
+                pauseAll: () => pauseAllExcept(null)
+            };
+        });
+    </script>
+
+    <!-- ====== SEÇÃO ÁUDIOS ====== -->
+
+    <section aria-labelledby="audios-title" class="audio-section">
+        <h2 id="audios-title">Áudios</h2>
+
+        <div class="audio-grid" role="list">
+
+            <!-- Áudio 1 -->
+            <figure class="audio-card" role="listitem" data-index="0">
+                <figcaption class="audio-caption">
+                    <div class="audio-title">A luv song</div>
+                    <div class="audio-sub">Por Erykah Badu</div>
+                </figcaption>
+                <audio controls preload="none">
+                    <source src="Audios/Erykah Badu - In Love With You (432Hz).mp3" type="audio/mpeg">
+                    Seu navegador não suporta o elemento de áudio.
+                </audio>
+            </figure>
+
+            <!-- Áudio 2 -->
+            <figure class="audio-card" role="listitem" data-index="1">
+                <figcaption class="audio-caption">
+                    <div class="audio-title">Uma musica de reciprocidade</div>
+                    <div class="audio-sub">Por Erykah Badu: Tyrone</div>
+                </figcaption>
+                <audio controls preload="none">
+                    <source src="Audios/Erykah Badu - Tyrone (Live).mp3" type="audio/mpeg">
+                    Seu navegador não suporta o elemento de áudio.
+                </audio>
+            </figure>
+
+            <!-- Áudio 3 -->
+            <figure class="audio-card" role="listitem" data-index="2">
+                <figcaption class="audio-caption">
+                    <div class="audio-title">Fragmento Poético de perda</div>
+                    <div class="audio-sub">Esqueci o nome da artista</div>
+                </figcaption>
+                <audio controls preload="none">
+                    <source
+                        src="Audios/I Hate to Lose You (1918_2025) (Official Music Video) ft. Xira Noir _ EXCLUSIVE #SongofSummer2025.mp3"
+                        type="audio/mpeg">
+                    Seu navegador não suporta o elemento de áudio.
+                </audio>
+            </figure>
+
+        </div>
+    </section>
+    <!-- Cole este script no fim do <body> (após a seção de áudios) -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const grid = document.querySelector('.audio-grid');
+            if (!grid) return;
+
+            const cards = Array.from(grid.querySelectorAll('.audio-card'));
+
+            // Helper: formatar tempo mm:ss (calcula sem atalho)
+            function formatTime(seconds) {
+                if (!isFinite(seconds)) return '0:00';
+                const s = Math.floor(seconds % 60);
+                const m = Math.floor((seconds - s) / 60);
+                const ss = String(s).padStart(2, '0');
+                return `${m}:${ss}`;
+            }
+
+            // Garante que só um áudio toque por vez
+            function pauseAllExcept(except) {
+                cards.forEach(card => {
+                    const a = card.querySelector('audio');
+                    if (a && a !== except) try { a.pause(); } catch (e) { }
+                });
+            }
+
+            // Cria interface custom para cada card
+            cards.forEach((card, idx) => {
+                const audio = card.querySelector('audio');
+                if (!audio) return;
+
+                // botão play, progress, time, download
+                const wrap = document.createElement('div');
+                wrap.className = 'audio-player-wrap';
+
+                const controls = document.createElement('div');
+                controls.className = 'audio-controls';
+
+                const playBtn = document.createElement('button');
+                playBtn.type = 'button';
+                playBtn.className = 'audio-play';
+                playBtn.setAttribute('aria-label', 'Reproduzir / Pausar');
+                playBtn.innerHTML = '▶';
+
+                const progress = document.createElement('div');
+                progress.className = 'progress';
+                progress.setAttribute('role', 'progressbar');
+                progress.setAttribute('aria-valuemin', '0');
+                progress.setAttribute('aria-valuemax', '100');
+                progress.setAttribute('tabindex', '0');
+
+                const fill = document.createElement('div');
+                fill.className = 'fill';
+                progress.appendChild(fill);
+
+                const time = document.createElement('div');
+                time.className = 'time';
+                time.textContent = '0:00 / 0:00';
+
+                controls.appendChild(playBtn);
+                controls.appendChild(progress);
+                controls.appendChild(time);
+
+                const actions = document.createElement('div');
+                actions.className = 'audio-actions';
+                const download = document.createElement('a');
+                download.className = 'audio-download';
+                download.textContent = 'Baixar';
+                download.setAttribute('download', '');
+                // tenta obter src do <source>
+                const src = (audio.querySelector('source') && audio.querySelector('source').src) || audio.getAttribute('src') || '#';
+                download.href = src;
+                actions.appendChild(download);
+
+                // monta
+                wrap.appendChild(controls);
+                wrap.appendChild(actions);
+                // inserir wrap após figcaption (ou no fim do card)
+                const caption = card.querySelector('.audio-caption');
+                if (caption) caption.insertAdjacentElement('afterend', wrap);
+                else card.appendChild(wrap);
+
+                // remover controles nativos (para manter UX consistente)
+                audio.removeAttribute('controls');
+
+                // Accessibility: expose index and title
+                card.setAttribute('data-index', idx);
+                playBtn.setAttribute('aria-pressed', 'false');
+
+                // state helpers
+                let isUserInteracted = false;
+
+                function syncPlayState() {
+                    if (audio.paused) {
+                        playBtn.innerHTML = '▶';
+                        playBtn.setAttribute('aria-pressed', 'false');
+                        card.classList.remove('playing');
+                    } else {
+                        playBtn.innerHTML = '❚❚';
+                        playBtn.setAttribute('aria-pressed', 'true');
+                        card.classList.add('playing');
+                    }
+                }
+
+                // Play/pause action
+                playBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    isUserInteracted = true;
+                    if (audio.paused) {
+                        pauseAllExcept(audio);
+                        // ensure some preload for smoother playback
+                        if (audio.preload === 'none') audio.preload = 'metadata';
+                        audio.play().catch(() => { /* autoplay may be blocked */ });
+                    } else {
+                        audio.pause();
+                    }
+                });
+
+                // Click on progress to seek
+                function seekFromEvent(ev) {
+                    const rect = progress.getBoundingClientRect();
+                    const x = (ev.touches ? ev.touches[0].clientX : ev.clientX) - rect.left;
+                    const pct = Math.max(0, Math.min(1, x / rect.width));
+                    if (isFinite(audio.duration) && audio.duration > 0) audio.currentTime = pct * audio.duration;
+                }
+                progress.addEventListener('click', seekFromEvent);
+                progress.addEventListener('touchstart', (ev) => { seekFromEvent(ev); }, { passive: true });
+
+                // keyboard for progress (arrow left/right)
+                progress.addEventListener('keydown', (e) => {
+                    if (!isFinite(audio.duration)) return;
+                    const step = Math.max(1, Math.floor(audio.duration / 20));
+                    if (e.key === 'ArrowLeft') { audio.currentTime = Math.max(0, audio.currentTime - step); e.preventDefault(); }
+                    if (e.key === 'ArrowRight') { audio.currentTime = Math.min(audio.duration, audio.currentTime + step); e.preventDefault(); }
+                    if (e.key === 'Home') { audio.currentTime = 0; e.preventDefault(); }
+                    if (e.key === 'End') { audio.currentTime = audio.duration; e.preventDefault(); }
+                });
+
+                // Update UI as audio plays
+                audio.addEventListener('timeupdate', () => {
+                    const cur = isFinite(audio.currentTime) ? audio.currentTime : 0;
+                    const dur = isFinite(audio.duration) ? audio.duration : 0;
+                    const pct = dur > 0 ? (cur / dur) * 100 : 0;
+                    fill.style.width = pct + '%';
+                    progress.setAttribute('aria-valuenow', Math.round(pct));
+                    time.textContent = `${formatTime(cur)} / ${formatTime(dur)}`;
+                });
+
+                // When metadata loaded update duration
+                audio.addEventListener('loadedmetadata', () => {
+                    const dur = isFinite(audio.duration) ? audio.duration : 0;
+                    time.textContent = `${formatTime(0)} / ${formatTime(dur)}`;
+                });
+
+                // Play/pause/ended handlers to sync UI & ensure single playback
+                audio.addEventListener('play', () => {
+                    pauseAllExcept(audio);
+                    syncPlayState();
+                });
+                audio.addEventListener('pause', syncPlayState);
+                audio.addEventListener('ended', () => {
+                    syncPlayState();
+                    audio.currentTime = 0;
+                });
+
+                // If user clicks the card area, toggle play
+                card.addEventListener('click', (e) => {
+                    // avoid toggling when clicking controls themselves
+                    if (e.target.closest('.audio-controls') || e.target.closest('.audio-actions')) return;
+                    isUserInteracted = true;
+                    if (audio.paused) { pauseAllExcept(audio); audio.play().catch(() => { }); }
+                    else audio.pause();
+                });
+
+                // keyboard support: Space/Enter on card toggles
+                card.addEventListener('keydown', (e) => {
+                    if ((e.key === ' ' || e.key === 'Space' || e.key === 'Enter')) {
+                        // prevent page scroll on space
+                        e.preventDefault();
+                        isUserInteracted = true;
+                        if (audio.paused) { pauseAllExcept(audio); audio.play().catch(() => { }); }
+                        else audio.pause();
+                    }
+                });
+
+                // accessibility: focusable wrappers
+                card.tabIndex = 0;
+
+            }); // end cards.forEach
+
+            // Pause all when page hidden
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) pauseAllExcept(null);
+            });
+
+            // Expose simple API
+            window.__audioGallery = {
+                pauseAll: () => pauseAllExcept(null),
+                playIndex: (i) => {
+                    const card = cards[i];
+                    if (!card) return;
+                    const audio = card.querySelector('audio');
+                    if (audio) { pauseAllExcept(audio); audio.play().catch(() => { }); }
+                }
+            };
+        });
+    </script>
+
+
+
+
+
+</body>
+
+</html>

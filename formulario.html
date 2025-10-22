@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Formulário com Preview</title>
+    <style>
+        /*Formulário — Estilo Aprimorado*/
+
+        /* ---------- Variáveis de tema ---------- */
+        :root {
+            --bg: #f4f6f9;
+            --card: #ffffff;
+            --accent-1: #ffb400;
+            /* gold */
+            --accent-2: #ff7f11;
+            /* orange */
+            --accent-3: #ff6f61;
+            /* coral */
+            --success: #2ecc71;
+            --danger: #d64545;
+            --muted: #6b7280;
+            --text: #0a2342;
+            --shadow: 0 8px 28px rgba(10, 18, 30, 0.06);
+            --radius: 12px;
+            --control-radius: 8px;
+            --control-border: 1px solid rgba(2, 6, 23, 0.06);
+            --focus-ring: 4px solid rgba(255, 214, 10, 0.18);
+            --max-width: 960px;
+            --gap: 1rem;
+            --transition-fast: 160ms;
+            --transition-smooth: 320ms;
+            --file-max: 10485760;
+            /* 10MB - lembrança para JS */
+        }
+
+        /* ---------- Reset / layout base ---------- */
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            margin: 0;
+            padding: 2rem;
+            font-family: Inter, "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Contêiner principal */
+        .form-card,
+        section.form-preview {
+            width: 100%;
+            max-width: var(--max-width);
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: calc(var(--gap) * 1.25);
+            box-shadow: var(--shadow);
+            margin: 0 auto;
+        }
+
+        /* Cabeçalho */
+        .form-card header,
+        section.form-preview header {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            align-items: center;
+            margin-bottom: calc(var(--gap) * 0.6);
+        }
+
+        .form-card h1,
+        section.form-preview h2 {
+            margin: 0;
+            color: var(--accent-2);
+            font-size: 1.35rem;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            font-weight: 800;
+            text-align: center;
+        }
+
+        .form-card p,
+        section.form-preview p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 0.95rem;
+            text-align: center;
+        }
+
+        /* ---------- Form controls (grid + stacking) ---------- */
+        form {
+            display: grid;
+            gap: var(--gap);
+        }
+
+        /* linhas e colunas utilitárias */
+        .row {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .col {
+            flex: 1 1 0;
+            min-width: 0;
+        }
+
+        /* labels e inputs */
+        label {
+            display: block;
+            font-weight: 700;
+            color: var(--muted);
+            margin-bottom: .35rem;
+            font-size: .95rem;
+        }
+
+        /* controles base */
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        textarea,
+        select {
+            width: 100%;
+            padding: .75rem 1rem;
+            border-radius: var(--control-radius);
+            border: var(--control-border);
+            background: linear-gradient(180deg, #fff, #fbfbfb);
+            font-size: 1rem;
+            color: var(--text);
+            transition: box-shadow var(--transition-fast), transform var(--transition-fast), border-color var(--transition-fast);
+            outline: none;
+        }
+
+        /* textarea ajuste */
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        /* foco acessível e visual forte */
+        input:focus,
+        textarea:focus,
+        select:focus {
+            box-shadow: 0 14px 40px rgba(255, 160, 40, 0.06);
+            border-color: rgba(255, 180, 60, 0.24);
+            transform: translateY(-2px);
+            outline: none;
+        }
+
+        /* placeholder */
+        ::placeholder {
+            color: #bdbdbd;
+        }
+
+        /* campo inválido */
+        input[aria-invalid="true"],
+        textarea[aria-invalid="true"],
+        select[aria-invalid="true"] {
+            border-color: var(--danger);
+            box-shadow: 0 8px 30px rgba(214, 69, 69, 0.06);
+        }
+
+        /* helper text e erros */
+        .field-hint {
+            font-size: .88rem;
+            color: var(--muted);
+            margin-top: 4px;
+        }
+
+        .field-error {
+            color: var(--danger);
+            font-weight: 700;
+            font-size: .92rem;
+            margin-top: 6px;
+        }
+
+        /* ---------- Botões (primário / secundário / ghost) ---------- */
+        .button {
+            display: inline-flex;
+            align-items: center;
+            gap: .5rem;
+            padding: .75rem 1rem;
+            border-radius: 10px;
+            font-weight: 800;
+            border: 0;
+            cursor: pointer;
+            transition: transform var(--transition-fast), box-shadow var(--transition-fast), filter var(--transition-fast);
+        }
+
+        .button:active {
+            transform: translateY(1px);
+        }
+
+        .button-primary {
+            background: linear-gradient(90deg, var(--accent-2), var(--accent-3));
+            color: #121212;
+            box-shadow: 0 14px 44px rgba(255, 140, 40, 0.06);
+        }
+
+        .button-ghost {
+            background: transparent;
+            color: var(--text);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            font-weight: 700;
+            box-shadow: none;
+        }
+
+        /* hover / focus */
+        .button-primary:hover {
+            filter: brightness(1.02);
+            transform: translateY(-2px);
+        }
+
+        .button-ghost:hover {
+            transform: translateY(-2px);
+            background: rgba(0, 0, 0, 0.02);
+        }
+
+        /* foco visível (keyboard) */
+        .button:focus-visible,
+        input:focus-visible,
+        textarea:focus-visible,
+        select:focus-visible {
+            outline: var(--focus-ring);
+            outline-offset: 6px;
+            border-radius: calc(var(--control-radius) + 2px);
+        }
+
+        /* disabled */
+        [disabled] {
+            opacity: .6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* ---------- File input (estilizado) ---------- */
+        .file-drop {
+            display: flex;
+            flex-direction: column;
+            gap: .5rem;
+            padding: .75rem;
+            border-radius: var(--control-radius);
+            border: 2px dashed rgba(0, 0, 0, 0.06);
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.6), rgba(250, 250, 250, 0.6));
+            transition: border-color var(--transition-fast), background var(--transition-fast);
+        }
+
+        .file-drop.is-dragover {
+            border-color: rgba(255, 130, 50, 0.9);
+            background: linear-gradient(180deg, rgba(255, 250, 230, 0.95), rgba(255, 245, 220, 0.9));
+        }
+
+        .file-meta {
+            font-size: .95rem;
+            color: var(--muted);
+        }
+
+        .file-actions {
+            display: flex;
+            gap: .5rem;
+            align-items: center;
+        }
+
+        /* ---------- Preview box (aprimorado) ---------- */
+        .preview-box {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 10px;
+            background: linear-gradient(180deg, #fbfbfd, #f7f7fb);
+            border: 1px solid rgba(0, 0, 0, 0.03);
+            display: grid;
+            gap: .75rem;
+            grid-template-columns: 1fr;
+            align-items: start;
+            box-shadow: 0 8px 24px rgba(2, 6, 23, 0.03);
+        }
+
+        /* grid para itens de preview - responsivo */
+        .preview-grid {
+            display: grid;
+            gap: .6rem;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .preview-item {
+            background: #fff;
+            border-radius: 8px;
+            padding: .7rem;
+            box-shadow: 0 6px 18px rgba(2, 6, 23, 0.03);
+        }
+
+        .preview-item strong {
+            display: block;
+            color: var(--accent-2);
+            margin-bottom: .35rem;
+            font-size: .95rem;
+        }
+
+        .preview-text {
+            color: var(--text);
+            font-size: .95rem;
+            line-height: 1.45;
+            white-space: pre-wrap;
+        }
+
+        /* thumbnail */
+        .thumb {
+            width: 84px;
+            height: 84px;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #eee;
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            display: inline-block;
+        }
+
+        .thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* botão pequeno para remover anexo no preview */
+        .remove-file {
+            background: transparent;
+            border: 0;
+            color: var(--danger);
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        /* ---------- Mensagens (aria-live) ---------- */
+        .form-message {
+            padding: .6rem .9rem;
+            border-radius: 8px;
+            font-weight: 700;
+        }
+
+        .form-message.success {
+            background: linear-gradient(90deg, rgba(220, 255, 200, 0.95), rgba(255, 250, 220, 0.92));
+            color: #123;
+        }
+
+        .form-message.error {
+            background: linear-gradient(90deg, rgba(255, 230, 230, 0.98), rgba(255, 240, 240, 0.98));
+            color: var(--danger);
+        }
+
+        /* ---------- Acessibilidade e preferências ---------- */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                transition: none !important;
+                animation: none !important;
+                scroll-behavior: auto !important;
+            }
+        }
+
+        /* modo escuro opcional (respeita preferências do sistema) */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #071426;
+                --card: linear-gradient(180deg, #071426, #0f1b2b);
+                --text: #f7fbff;
+                --muted: #aab3bd;
+                --shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+                --control-border: 1px solid rgba(255, 255, 255, 0.04);
+            }
+
+            body {
+                background: linear-gradient(180deg, #031328, #071426);
+            }
+
+            .form-card {
+                box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+            }
+
+            input,
+            textarea {
+                background: linear-gradient(180deg, #071426, #0b1b2b);
+                color: var(--text);
+                border-color: rgba(255, 255, 255, 0.04);
+            }
+
+            .preview-box {
+                background: linear-gradient(180deg, #061428, #071428);
+                border-color: rgba(255, 255, 255, 0.02);
+            }
+
+            .preview-item {
+                background: linear-gradient(180deg, #071428, #071428);
+            }
+
+            .thumb {
+                background: rgba(255, 255, 255, 0.02);
+                border-color: rgba(255, 255, 255, 0.02);
+            }
+        }
+
+        /* ---------- Responsividade (mobile) ---------- */
+        @media (max-width: 720px) {
+            body {
+                padding: 1rem;
+            }
+
+            .row {
+                flex-direction: column;
+            }
+
+            .preview-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .thumb {
+                width: 72px;
+                height: 72px;
+            }
+        }
+
+        /* ---------- Impressão (simplifica visual) ---------- */
+        @media print {
+            body {
+                background: #fff;
+                color: #000;
+                padding: 0;
+            }
+
+            .form-card,
+            .preview-box {
+                box-shadow: none;
+                border: 1px solid #ddd;
+            }
+
+            .file-drop {
+                border-style: solid;
+            }
+
+            .button,
+            .remove-file {
+                display: none;
+            }
+        }
+
+        /* ---------- Pequenas utilidades ---------- */
+        .hidden {
+            display: none !important;
+        }
+
+        .visually-hidden {
+            position: absolute !important;
+            height: 1px;
+            width: 1px;
+            overflow: hidden;
+            clip: rect(1px, 1px, 1px, 1px);
+            white-space: nowrap;
+            border: 0;
+            padding: 0;
+            margin: -1px;
+        }
+
+        .align-right {
+            text-align: right;
+        }
+    </style>
+</head>
+
+<body>
+    <section class="form-preview">
+        <h2>Enviar Mensagem</h2>
+        <form id="contactForm" method="POST" action="contact.php" enctype="multipart/form-data">
+            <div>
+                <label for="nome">Nome de Usuário</label>
+                <input type="text" id="nome" name="nome" required>
+            </div>
+            <div>
+                <label for="email">Email de Usuário</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div>
+                <label for="assunto">Assunto</label>
+                <input type="text" id="assunto" name="assunto" required>
+            </div>
+            <div>
+                <label for="mensagem">Mensagem</label>
+                <textarea id="mensagem" name="mensagem" rows="5" required></textarea>
+            </div>
+            <div>
+                <label for="anexo">Anexar Ficheiro</label>
+                <input type="file" id="anexo" name="anexo">
+            </div>
+            <button type="button" id="previewBtn">Pré-visualizar</button>
+            <button type="submit">Enviar</button>
+        </form>
+
+        <!-- Caixa de Preview -->
+        <div class="preview-box" id="previewBox" style="display:none;">
+            <h3>Pré-visualização da Mensagem</h3>
+            <div class="preview-item"><strong>Nome:</strong> <span id="prevNome"></span></div>
+            <div class="preview-item"><strong>Email:</strong> <span id="prevEmail"></span></div>
+            <div class="preview-item"><strong>Assunto:</strong> <span id="prevAssunto"></span></div>
+            <div class="preview-item"><strong>Mensagem:</strong> <span id="prevMensagem"></span></div>
+            <div class="preview-item"><strong>Anexo:</strong> <span id="prevAnexo"></span></div>
+        </div>
+    </section>
+
+    <script>
+        (function () {
+            'use strict';
+
+            // Config
+            const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
+            const ALLOWED_TYPES = [
+                'image/png', 'image/jpeg', 'image/webp', 'image/gif',
+                'application/pdf',
+                'text/plain',
+                'application/msword',
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                'audio/mpeg'
+            ];
+
+            // Elements (expected in the page)
+            const previewBtn = document.getElementById('previewBtn');
+            const previewBox = document.getElementById('previewBox');
+
+            // preview targets inside the previewBox
+            const prevNome = document.getElementById('prevNome');
+            const prevEmail = document.getElementById('prevEmail');
+            const prevAssunto = document.getElementById('prevAssunto');
+            const prevMensagem = document.getElementById('prevMensagem');
+            const prevAnexo = document.getElementById('prevAnexo');
+
+            // form fields
+            const nomeEl = document.getElementById('nome');
+            const emailEl = document.getElementById('email');
+            const assuntoEl = document.getElementById('assunto');
+            const mensagemEl = document.getElementById('mensagem');
+            const anexoEl = document.getElementById('anexo');
+
+            if (!previewBtn || !previewBox || !prevNome || !prevEmail || !prevAssunto || !prevMensagem || !prevAnexo) {
+                // required nodes not present — nothing to do
+                console.warn('Preview script: required DOM nodes missing.');
+                return;
+            }
+
+            // state for file preview object URL
+            let fileObjectURL = null;
+
+            // helpers
+            function formatBytes(bytes) {
+                if (!bytes) return '0 B';
+                const units = ['B', 'KB', 'MB', 'GB'];
+                let i = 0;
+                while (bytes >= 1024 && i < units.length - 1) {
+                    bytes /= 1024;
+                    i++;
+                }
+                return `${bytes.toFixed(bytes < 10 && i > 0 ? 2 : 1)} ${units[i]}`;
+            }
+
+            function isImageType(type) {
+                return type && type.startsWith('image/');
+            }
+
+            function clearFilePreview() {
+                if (fileObjectURL) {
+                    URL.revokeObjectURL(fileObjectURL);
+                    fileObjectURL = null;
+                }
+                // remove any children produced for file preview
+                prevAnexo.innerHTML = '';
+            }
+
+            function renderFilePreview(file) {
+                clearFilePreview();
+                if (!file) {
+                    prevAnexo.textContent = '(nenhum)';
+                    return;
+                }
+
+                // basic validation
+                if (file.size > MAX_FILE_SIZE) {
+                    prevAnexo.textContent = `${file.name} — ficheiro demasiado grande (${formatBytes(file.size)}). Máx: ${formatBytes(MAX_FILE_SIZE)}.`;
+                    prevAnexo.setAttribute('data-error', 'size');
+                    return;
+                }
+
+                if (ALLOWED_TYPES.indexOf(file.type) === -1) {
+                    prevAnexo.textContent = `${file.name} — tipo não suportado (${file.type || 'desconhecido'}).`;
+                    prevAnexo.setAttribute('data-error', 'type');
+                    return;
+                }
+
+                prevAnexo.removeAttribute('data-error');
+
+                // image -> show thumbnail
+                if (isImageType(file.type)) {
+                    fileObjectURL = URL.createObjectURL(file);
+                    const img = document.createElement('img');
+                    img.src = fileObjectURL;
+                    img.alt = `Pré-visualização de ${file.name}`;
+                    img.style.maxWidth = '140px';
+                    img.style.maxHeight = '120px';
+                    img.style.display = 'block';
+                    img.style.borderRadius = '6px';
+                    img.style.boxShadow = '0 10px 24px rgba(0,0,0,0.12)';
+                    const info = document.createElement('div');
+                    info.style.marginTop = '6px';
+                    info.style.fontSize = '0.95rem';
+                    info.textContent = `${file.name} — ${formatBytes(file.size)}`;
+                    prevAnexo.appendChild(img);
+                    prevAnexo.appendChild(info);
+                    return;
+                }
+
+                // non-image -> show meta info
+                const meta = document.createElement('div');
+                meta.innerHTML = `<strong>${file.name}</strong><div style="font-size:0.9rem;color:#666">${formatBytes(file.size)} • ${file.type || 'tipo desconhecido'}</div>`;
+                prevAnexo.appendChild(meta);
+            }
+
+            // Insert text into preview elements safely (use textContent)
+            function fillPreview() {
+                const nome = (nomeEl && nomeEl.value) ? nomeEl.value.trim() : '';
+                const email = (emailEl && emailEl.value) ? emailEl.value.trim() : '';
+                const assunto = (assuntoEl && assuntoEl.value) ? assuntoEl.value.trim() : '';
+                const mensagem = (mensagemEl && mensagemEl.value) ? mensagemEl.value.trim() : '';
+                const anexoFile = (anexoEl && anexoEl.files && anexoEl.files[0]) ? anexoEl.files[0] : null;
+
+                prevNome.textContent = nome || '(não preenchido)';
+                prevEmail.textContent = email || '(não preenchido)';
+                prevAssunto.textContent = assunto || '(não preenchido)';
+                prevMensagem.textContent = mensagem || '(não preenchido)';
+
+                renderFilePreview(anexoFile);
+            }
+
+            // simple client-side validation, returns an array of messages (empty = OK)
+            function validateForPreview() {
+                const errors = [];
+                const nome = nomeEl.value.trim();
+                const email = emailEl.value.trim();
+                const mensagem = mensagemEl.value.trim();
+
+                if (!nome || nome.length < 2) errors.push('Nome obrigatório (mín. 2 caracteres).');
+                // basic email regex (sufficient for client-side)
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.push('Email inválido.');
+                if (!mensagem || mensagem.length < 6) errors.push('Mensagem muito curta (mín. 6 caracteres).');
+
+                const file = anexoEl.files && anexoEl.files[0] ? anexoEl.files[0] : null;
+                if (file) {
+                    if (file.size > MAX_FILE_SIZE) errors.push('O anexo ultrapassa o limite de tamanho permitido.');
+                    if (ALLOWED_TYPES.indexOf(file.type) === -1) errors.push('Tipo de anexo não suportado.');
+                }
+
+                return errors;
+            }
+
+            // Create a small message area inside previewBox (if not present)
+            function ensurePreviewControls() {
+                let header = previewBox.querySelector('.__preview_header');
+                if (!header) {
+                    header = document.createElement('div');
+                    header.className = '__preview_header';
+                    header.style.display = 'flex';
+                    header.style.justifyContent = 'space-between';
+                    header.style.alignItems = 'center';
+                    header.style.marginBottom = '8px';
+
+                    const title = document.createElement('strong');
+                    title.textContent = 'Pré-visualização da Mensagem';
+                    title.style.fontSize = '0.95rem';
+                    title.style.color = '#111';
+
+                    const controls = document.createElement('div');
+                    controls.style.display = 'flex';
+                    controls.style.gap = '8px';
+
+                    const closeBtn = document.createElement('button');
+                    closeBtn.type = 'button';
+                    closeBtn.className = '__preview_close';
+                    closeBtn.textContent = 'Fechar';
+                    closeBtn.setAttribute('aria-label', 'Fechar pré-visualização');
+                    closeBtn.style.cursor = 'pointer';
+                    closeBtn.style.background = 'transparent';
+                    closeBtn.style.border = '1px solid rgba(0,0,0,0.06)';
+                    closeBtn.style.padding = '6px 8px';
+                    closeBtn.style.borderRadius = '8px';
+                    closeBtn.addEventListener('click', hidePreview);
+
+                    controls.appendChild(closeBtn);
+                    header.appendChild(title);
+                    header.appendChild(controls);
+                    previewBox.insertBefore(header, previewBox.firstChild);
+                }
+
+                // ensure a place for warnings
+                let warn = previewBox.querySelector('.__preview_warn');
+                if (!warn) {
+                    warn = document.createElement('div');
+                    warn.className = '__preview_warn';
+                    warn.setAttribute('aria-live', 'polite');
+                    warn.style.color = '#b33';
+                    warn.style.fontWeight = '700';
+                    warn.style.marginBottom = '6px';
+                    previewBox.insertBefore(warn, previewBox.querySelector('.caption') || previewBox.children[1] || previewBox.children[0]);
+                }
+            }
+
+            function setPreviewWarning(msg) {
+                ensurePreviewControls();
+                const warn = previewBox.querySelector('.__preview_warn');
+                warn.textContent = msg || '';
+                if (!msg) warn.style.display = 'none'; else warn.style.display = '';
+            }
+
+            function showPreview() {
+                fillPreview();
+                previewBox.style.display = 'block';
+                previewBox.setAttribute('aria-hidden', 'false');
+                previewBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                previewBtn.setAttribute('aria-pressed', 'true');
+                // focus the close button if exists, otherwise the previewBox itself
+                const closeBtn = previewBox.querySelector('.__preview_close');
+                if (closeBtn) closeBtn.focus();
+            }
+
+            function hidePreview() {
+                previewBox.style.display = 'none';
+                previewBox.setAttribute('aria-hidden', 'true');
+                previewBtn.setAttribute('aria-pressed', 'false');
+                setPreviewWarning('');
+                // clear thumbnail object url to free memory
+                clearFilePreview();
+                // return focus to preview button for accessibility
+                previewBtn.focus();
+            }
+
+            // Toggle preview on button click: update content and show
+            previewBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                // validate and show warnings if any
+                const errs = validateForPreview();
+                if (errs.length) {
+                    // show all messages in the preview area if user opens preview
+                    ensurePreviewControls();
+                    setPreviewWarning(errs.join(' '));
+                    // still fill preview but emphasize warnings
+                    fillPreview();
+                    showPreview();
+                    return;
+                }
+                // OK -> clear any warnings and show preview
+                setPreviewWarning('');
+                showPreview();
+            });
+
+            // Live update: when fields change while preview is open, update it
+            [nomeEl, emailEl, assuntoEl, mensagemEl, anexoEl].forEach(el => {
+                if (!el) return;
+                el.addEventListener('input', () => {
+                    if (previewBox.style.display !== 'none') {
+                        fillPreview();
+                    }
+                });
+            });
+
+            // close on Escape when preview open
+            document.addEventListener('keydown', function (ev) {
+                if (ev.key === 'Escape' && previewBox.style.display !== 'none') {
+                    hidePreview();
+                }
+            });
+
+            // ensure we render file preview when user chooses a file
+            if (anexoEl) {
+                anexoEl.addEventListener('change', () => {
+                    const f = anexoEl.files && anexoEl.files[0] ? anexoEl.files[0] : null;
+                    if (previewBox.style.display !== 'none') {
+                        renderFilePreview(f);
+                    } else {
+                        // update prevAnexo summary (text)
+                        prevAnexo.textContent = f ? f.name : '(nenhum)';
+                    }
+                });
+            }
+
+            // ensure cleanup on unload
+            window.addEventListener('unload', () => {
+                clearFilePreview();
+            });
+
+            // initial state
+            previewBox.style.display = previewBox.style.display || 'none';
+            previewBox.setAttribute('aria-hidden', previewBox.style.display === 'none' ? 'true' : 'false');
+            previewBtn.setAttribute('aria-pressed', 'false');
+
+        })();
+    </script>
+
+</body>
+
+</html>

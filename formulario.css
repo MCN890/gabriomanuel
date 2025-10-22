@@ -1,0 +1,270 @@
+/* formulario.css
+   Visual forte, micro-animações, foco acessível, responsivo.
+   Paleta: amarelo / laranja / coral / branco.
+*/
+
+:root {
+    --radius: 14px;
+    --accent-coral: #ff6f61;
+    --accent-gold: #ffb400;
+    --accent-orange: #ff8a00;
+    --accent-yellow: #ffdb6b;
+    --bg: #faf8f5;
+    --card-bg: linear-gradient(180deg, #fff, #fbfbfb);
+    --text: #111;
+    --muted: #6b6b6b;
+    --shadow-soft: 0 12px 40px rgba(0, 0, 0, 0.08);
+    --focus-ring: rgba(255, 210, 120, 0.28);
+    --fast: 120ms;
+    --mid: 180ms;
+    --max-width: 920px;
+}
+
+/* Base layout */
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Inter, Poppins, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+    background: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    padding: 28px;
+    line-height: 1.45;
+}
+
+/* Container */
+.container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+}
+
+/* Nav */
+.form-nav {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 18px;
+    gap: 8px;
+}
+
+.form-nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 12px;
+}
+
+.form-nav a {
+    display: inline-block;
+    padding: 8px 12px;
+    border-radius: 10px;
+    font-weight: 600;
+    color: var(--text);
+    text-decoration: none;
+    transition: transform var(--fast), box-shadow var(--mid), background var(--mid);
+}
+
+.form-nav a:focus,
+.form-nav a:hover {
+    transform: translateY(-3px);
+    background: linear-gradient(90deg, var(--accent-gold), var(--accent-orange));
+    color: #111;
+    box-shadow: 0 12px 30px rgba(255, 160, 40, 0.08);
+    outline: none;
+}
+
+/* Section card */
+.formulario-section {
+    background: var(--card-bg);
+    padding: 22px;
+    border-radius: 18px;
+    box-shadow: var(--shadow-soft);
+    position: relative;
+    overflow: visible;
+}
+
+/* Heading */
+.formulario-section h2 {
+    margin: 0 0 10px 0;
+    font-size: 1.85rem;
+    letter-spacing: .3px;
+}
+
+.formulario-section h2::after {
+    content: "";
+    display: block;
+    width: 56px;
+    height: 6px;
+    margin-top: 12px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--accent-gold), var(--accent-coral));
+    box-shadow: 0 10px 30px rgba(255, 160, 40, 0.08);
+}
+
+/* Flash messages container */
+.flash-wrap {
+    margin-bottom: 12px;
+}
+
+.form-message {
+    padding: 12px 14px;
+    border-radius: 10px;
+    font-weight: 700;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.04);
+}
+
+.form-message.success {
+    background: linear-gradient(90deg, rgba(220, 255, 200, 0.95), rgba(255, 250, 220, 0.92));
+    color: #123;
+}
+
+.form-message.error {
+    background: linear-gradient(90deg, rgba(255, 230, 230, 0.98), rgba(255, 240, 240, 0.98));
+    color: #6b1111;
+}
+
+/* Form layout */
+form {
+    display: grid;
+    gap: 12px;
+}
+
+label {
+    display: block;
+    font-weight: 700;
+    font-size: .95rem;
+    color: var(--muted);
+    margin-bottom: 6px;
+}
+
+input[type="text"],
+input[type="email"],
+textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    background: linear-gradient(180deg, #fff, #f8f7f6);
+    color: var(--text);
+    font-size: 1rem;
+    transition: transform var(--fast), box-shadow var(--mid), border-color var(--mid);
+    min-height: 44px;
+    resize: vertical;
+}
+
+textarea {
+    min-height: 120px;
+}
+
+/* Focus */
+:focus {
+    outline: none;
+}
+
+input:focus,
+textarea:focus,
+input:focus-visible,
+textarea:focus-visible {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(255, 160, 40, 0.08), 0 2px 8px rgba(0, 0, 0, 0.06);
+    border-color: var(--accent-gold);
+    caret-color: var(--accent-coral);
+    border: 1px solid rgba(255, 180, 60, 0.18);
+}
+
+/* Field errors */
+.field-error {
+    color: #b33;
+    font-size: .88rem;
+    margin-top: -2px;
+}
+
+/* Button */
+button[type="submit"] {
+    display: inline-grid;
+    grid-auto-flow: column;
+    gap: .6rem;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 16px;
+    border-radius: 12px;
+    background: linear-gradient(90deg, var(--accent-coral), var(--accent-gold));
+    color: #111;
+    font-weight: 800;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    box-shadow: 0 16px 50px rgba(255, 140, 40, 0.08);
+    transition: transform var(--fast), box-shadow var(--mid), filter var(--mid);
+}
+
+button[type="submit"]:hover,
+button[type="submit"]:focus {
+    transform: translateY(-3px);
+    box-shadow: 0 28px 80px rgba(255, 140, 40, 0.12);
+    outline: none;
+}
+
+button[type="submit"].loading {
+    pointer-events: none;
+    opacity: .9;
+}
+
+/* Honeypot hidden */
+.honeypot {
+    position: absolute;
+    left: -9999px;
+    opacity: 0;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+}
+
+/* small screens */
+@media (max-width:720px) {
+    body {
+        padding: 14px;
+    }
+
+    .formulario-section {
+        padding: 16px;
+    }
+
+    button[type="submit"] {
+        width: 100%;
+    }
+}
+
+/* Accessibility: reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition: none !important;
+        animation: none !important;
+    }
+}
+
+/* Decorative shadow under card */
+.formulario-section::after {
+    content: "";
+    position: absolute;
+    bottom: -20px;
+    left: 10%;
+    width: 80%;
+    height: 12px;
+    background: radial-gradient(ellipse at center, rgba(255, 200, 80, 0.12), transparent 60%);
+    filter: blur(8px);
+    border-radius: 50%;
+    pointer-events: none;
+}

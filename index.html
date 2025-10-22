@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="pt">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Login — Acesso</title>
+    <link rel="stylesheet" href="login.css">
+
+    <!-- Script para toggle de visibilidade da password -->
+    <script defer>
+        document.addEventListener('DOMContentLoaded', function () {
+            const toggle = document.querySelector('.toggle-btn');
+            const pwd = document.getElementById('codigo');
+            const form = document.getElementById('loginForm');
+            const errorBox = document.getElementById('client-error');
+
+            // Mostrar/ocultar código
+            if (toggle && pwd) {
+                toggle.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const isPassword = pwd.type === 'password';
+                    pwd.type = isPassword ? 'text' : 'password';
+                    toggle.setAttribute('aria-pressed', String(!isPassword));
+                    toggle.title = isPassword ? 'Ocultar código' : 'Mostrar código';
+                });
+            }
+
+            // Validação do código
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                const valor = pwd.value.trim();
+                if (valor === "123456") {
+                    // Redireciona para a página inicial
+                    window.location.href = "pagInicial.html";
+                } else {
+                    errorBox.textContent = "Código incorreto. Tente novamente.";
+                    errorBox.style.display = "block";
+                }
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <main class="container" aria-labelledby="login-title">
+        <header class="brand">
+            <div class="logo">GM</div>
+            <div>
+                <h1 id="login-title">Bem‑vindo à minha Web Page</h1>
+                <p class="lead">Por favor, insira o código de acesso para continuar.</p>
+            </div>
+        </header>
+
+        <h2>Autenticação</h2>
+
+        <!-- Mensagem de erro (JS controla a exibição) -->
+        <div id="client-error" class="feedback error" role="alert" aria-live="assertive" style="display:none;"></div>
+
+        <form id="loginForm" novalidate>
+            <div class="form">
+                <label class="label" for="codigo">Digite o código de acesso:</label>
+                <div class="input-wrap">
+                    <input type="password" id="codigo" name="codigo" placeholder="Digite o código"
+                        autocomplete="one-time-code" required aria-required="true" aria-describedby="login-help">
+                    <button class="toggle-btn" type="button" aria-pressed="false"
+                        aria-label="Mostrar código">👁️</button>
+                </div>
+
+                <div id="login-help" class="feedback" aria-hidden="true">Mantenha seu código em segurança.</div>
+
+                <button class="btn alt-hover" type="submit">Entrar</button>
+            </div>
+        </form>
+
+        <noscript>
+            <p class="feedback">JavaScript está desativado no seu navegador — ative-o para usar o login.</p>
+        </noscript>
+    </main>
+</body>
+
+</html>

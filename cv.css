@@ -1,0 +1,1565 @@
+/* ---------- Global (melhorado) ---------- */
+
+/* Variáveis globais para fácil ajuste */
+:root {
+    --bg-1: #0A2342;
+    /* tom principal do gradiente */
+    --accent: #FF7F11;
+    /* laranja de destaque */
+    --card-bg: #ffffff;
+    /* fundo do container */
+    --text-dark: #071426;
+    /* texto principal (contraste melhor) */
+    --radius: 12px;
+    --max-width: 1200px;
+    --shadow-soft: 0 8px 24px rgba(2, 6, 23, 0.12);
+    --shadow-strong: 0 18px 48px rgba(2, 6, 23, 0.16);
+    --transition: 220ms cubic-bezier(.2, .9, .25, 1);
+    --safe-padding: 1rem;
+    --font-sans: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+/* Reset moderno e consistente */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Altas qualidades tipográficas em sistemas modernos */
+html,
+body {
+    height: 100%
+}
+
+body {
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background: linear-gradient(135deg, var(--bg-1) 0%, #112F4A 40%, var(--accent) 100%);
+    color: var(--text-dark);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* centra o container horizontalmente */
+    padding: calc(var(--safe-padding) + env(safe-area-inset-top)) calc(var(--safe-padding) + env(safe-area-inset-left));
+    -webkit-text-size-adjust: 100%;
+}
+
+/* Focus-visible global (keyboard-first) */
+:focus {
+    outline-offset: 3px
+}
+
+:focus-visible {
+    outline: 3px solid rgba(255, 127, 17, 0.18);
+    outline-offset: 4px
+}
+
+/* Container principal (mantive max-width: 1200px) */
+.cv-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    /* permite quebra em telas menores */
+    width: min(95%, var(--max-width));
+    max-width: var(--max-width);
+    margin: clamp(1rem, 3.5vw, 2.25rem) auto;
+    background-color: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-soft);
+    overflow: visible;
+    /* permite que sombras e elementos se expandam */
+    transition: box-shadow var(--transition), transform var(--transition);
+    will-change: transform;
+    padding-bottom: 2.5rem;
+    /* espaçamento inferior extra */
+    min-height: 80vh;
+    /* garante altura mínima mesmo com pouco conteúdo */
+}
+
+/* micro-interação ao foco/hover do container (subtil, não intrusivo) */
+.cv-container:focus-within,
+.cv-container:hover {
+    box-shadow: var(--shadow-strong);
+    transform: translateY(-2px);
+}
+
+/* Mobile-first: empilha em telas pequenas, mantendo proporções visuais */
+@media (max-width: 980px) {
+    .cv-container {
+        flex-direction: column;
+        margin: 1rem;
+        width: calc(100% - 2rem);
+    }
+}
+
+/* Respeitar preferências de movimento reduzido */
+@media (prefers-reduced-motion: reduce) {
+
+    .cv-container,
+    .cv-container:hover,
+    .cv-container:focus-within {
+        transition: none;
+        transform: none;
+    }
+}
+
+
+/* ------------------ Perfil (lado esquerdo) — versão aprimorada ------------------ */
+/* Usa variáveis globais (definidas em :root) quando disponíveis; caso contrário mantêm-se os valores */
+
+.perfil {
+    width: 30%;
+    /* preservado */
+    background: linear-gradient(135deg, var(--bg-1, #0A2342) 0%, var(--accent, #FF7F11) 100%);
+    color: #fff;
+    padding: 2rem 1.5rem;
+    /* preservado */
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    /* preservado */
+    justify-content: space-between;
+    align-items: center;
+    border-top-left-radius: var(--radius, 12px);
+    border-bottom-left-radius: var(--radius, 12px);
+    box-shadow: var(--shadow-soft, 0 8px 24px rgba(0, 0, 0, 0.12));
+    transition: box-shadow var(--transition, 220ms) ease, transform var(--transition, 220ms) ease;
+    will-change: transform;
+}
+
+/* preserve o comportamento original visual, mas adiciona micro-interações */
+.perfil:focus-within,
+.perfil:hover {
+    box-shadow: var(--shadow-strong, 0 18px 48px rgba(2, 6, 23, 0.14));
+    transform: translateY(-2px);
+}
+
+/* ======= Foto de perfil — versão aprimorada ======= */
+/* Usa variáveis para fácil personalização e melhor acesso a temas */
+:root {
+    --profile-radius: 10px;
+    --profile-shadow: 0 6px 18px rgba(0, 0, 0, 0.28);
+    --profile-shadow-hover: 0 18px 40px rgba(0, 0, 0, 0.36);
+    --focus-ring: rgba(255, 214, 10, 0.16);
+    --accent-2: #FFD60A;
+    --text-on-accent: #fff;
+}
+
+/* Container centralizador (mantém 100% da coluna mas centraliza o conteúdo) */
+.foto-perfil {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* permite adicionar um wrapper com proporção desejada */
+}
+
+/* Envolvente para controlar aspecto e acessibilidade */
+.foto-perfil .img-wrap {
+    width: 100%;
+    max-width: 380px;
+    /* limite visual útil em layouts largos */
+    border-radius: var(--profile-radius);
+    overflow: hidden;
+    background-color: #eee;
+    /* fallback neutro enquanto carrega */
+    box-shadow: var(--profile-shadow);
+    transition: transform 320ms cubic-bezier(.2, .9, .25, 1), box-shadow 320ms;
+    will-change: transform, box-shadow;
+}
+
+/* A própria imagem — mantém width:100% e recorte controlado */
+.foto-perfil img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 5;
+    /* sugere proporção (ajuste se precisar) */
+    object-fit: cover;
+    object-position: center;
+    border-radius: 0;
+    /* controlado pelo wrapper */
+    transition: transform 300ms cubic-bezier(.2, .9, .25, 1), filter 300ms, opacity 300ms;
+    cursor: pointer;
+    -webkit-user-drag: none;
+}
+
+/* Hover / focus acessível no wrapper (melhor para keyboard & touch) */
+.foto-perfil .img-wrap:hover,
+.foto-perfil .img-wrap:focus-within {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: var(--profile-shadow-hover);
+}
+
+/* Foco visível para teclado — usa outline suave */
+.foto-perfil .img-wrap:focus-within {
+    outline: 4px solid var(--focus-ring);
+    outline-offset: 6px;
+}
+
+/* Permitir foco no elemento clicável dentro do wrapper (ex.: link ou button) */
+.foto-perfil .img-wrap a,
+.foto-perfil .img-wrap button,
+.foto-perfil .img-wrap img[tabindex] {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+/* Efeito direto na imagem (pequeno lift) */
+.foto-perfil .img-wrap:hover img,
+.foto-perfil .img-wrap:focus-within img {
+    transform: translateY(-6px) scale(1.03);
+    filter: saturate(1.03) brightness(1.02);
+}
+
+/* Suaviza quando imagem já carregou (se adicionar classe .loaded via JS) */
+.foto-perfil img.loaded {
+    opacity: 1;
+    transform: none;
+}
+
+/* Acessibilidade: reduzir movimento para usuários que pedem isso */
+@media (prefers-reduced-motion: reduce) {
+
+    .foto-perfil .img-wrap,
+    .foto-perfil img {
+        transition: none !important;
+        transform: none !important;
+    }
+}
+
+/* Mobile tweaks — reduz sombras e escala para pequenos ecrãs */
+@media (max-width: 480px) {
+    .foto-perfil .img-wrap {
+        max-width: 100%;
+        box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12);
+        transform: none;
+    }
+
+    .foto-perfil img {
+        aspect-ratio: 3 / 4;
+    }
+}
+
+/* ======= Títulos das secções (painel esquerdo) ======= */
+.contactos h2,
+.navegacao h2 {
+    font-size: 1.12rem;
+    margin: 0 0 0.5rem 0;
+    font-weight: 800;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: var(--accent-2);
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Pequeno decorator para consistência visual */
+.contactos h2::after,
+.navegacao h2::after {
+    content: "";
+    display: inline-block;
+    height: 6px;
+    width: 46px;
+    margin-left: 10px;
+    border-radius: 6px;
+    background: linear-gradient(90deg, var(--accent-2), #ff8a00 80%);
+    vertical-align: middle;
+    opacity: 0.95;
+}
+
+/* ======= Textos de contacto e slogan ======= */
+.contactos p,
+.slogan blockquote {
+    font-size: 0.95rem;
+    margin: 0 0 0.4rem 0;
+    color: rgba(255, 255, 255, 0.95);
+    line-height: 1.45;
+}
+
+/* Slogan — contraste, legibilidade e estilo */
+.slogan blockquote {
+    font-style: italic;
+    color: var(--text-on-accent, #fff);
+    border-left: 4px solid var(--accent-2);
+    padding-left: 0.6rem;
+    margin: 0;
+    line-height: 1.4;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent);
+    padding: 0.55rem 0.6rem;
+    border-radius: 6px;
+}
+
+/* Se o fundo do seu painel for claro, ajusta as cores automaticamente */
+:where(.panel--light) .contactos p,
+:where(.panel--light) .slogan blockquote {
+    color: #222;
+}
+
+:where(.panel--light) .contactos h2,
+:where(.panel--light) .navegacao h2 {
+    color: #ff8a00;
+}
+
+/* Pequenas melhorias para imprimir / leitura */
+@media print {
+    .foto-perfil .img-wrap {
+        box-shadow: none;
+    }
+
+    .contactos h2::after {
+        display: none;
+    }
+}
+
+/* ===========================
+   Navegação — versão aprimorada
+   - mais acessível (focus-visible, hit-area maior, aria-current)
+   - pouca alteração visual na aparência base
+   =========================== */
+
+/* Variáveis (herde do :root global se existir) */
+:root {
+    --nav-gap: 0.5rem;
+    --nav-radius: 8px;
+    --nav-padding-xy: .5rem .75rem;
+    --nav-transition: 220ms;
+    --nav-accent-1: #FFD60A;
+    /* amarelo */
+    --nav-accent-2: #FF7F11;
+    /* laranja */
+    --nav-text-on-accent: #0A2342;
+    --nav-text-default: #fff;
+    --nav-shadow-hover: 0 10px 28px rgba(0, 0, 0, 0.14);
+}
+
+/* --- Listagem limpa e alinhada --- */
+.navegacao ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--nav-gap);
+    align-items: stretch;
+}
+
+/* --- Itens com espaçamento consistente --- */
+.navegacao li {
+    margin: 0;
+    /* margem é controlada pelo gap da UL */
+}
+
+/* --- Links — maior área de clique, boa legibilidade --- */
+.navegacao a {
+    display: block;
+    /* full-width tap target */
+    padding: var(--nav-padding-xy);
+    border-radius: var(--nav-radius);
+    text-decoration: none;
+    font-weight: 700;
+    color: var(--nav-text-default);
+    transition: background var(--nav-transition) ease,
+        transform var(--nav-transition) ease,
+        box-shadow var(--nav-transition) ease,
+        color var(--nav-transition) ease;
+    line-height: 1.25;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.05);
+    /* ensure good minimum hit size (48x48) */
+    min-height: 44px;
+    display: grid;
+    align-items: center;
+}
+
+/* subtle neutral background to aid contrast on some panels */
+.navegacao a[data-bg="soft"] {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+/* --- Hover / active visual (keeps original look but higher contrast) --- */
+.navegacao a:hover,
+.navegacao a:active {
+    transform: translateY(-3px);
+    background: linear-gradient(90deg, var(--nav-accent-1) 0%, var(--nav-accent-2) 100%);
+    color: var(--nav-text-on-accent);
+    box-shadow: var(--nav-shadow-hover);
+    text-decoration: none;
+}
+
+/* --- Keyboard focus (accessibility) --- */
+.navegacao a:focus-visible {
+    outline: 3px solid rgba(255, 214, 10, 0.32);
+    outline-offset: 3px;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
+    border-radius: var(--nav-radius);
+}
+
+/* apply a slightly stronger visible focus for high-contrast mode */
+@media (prefers-contrast: more) {
+    .navegacao a:focus-visible {
+        outline-color: rgba(255, 214, 10, 0.56);
+    }
+}
+
+/* --- Indicate current/active page — supports aria-current="page" or .is-active --- */
+.navegacao a[aria-current="page"],
+.navegacao a.is-active {
+    background: linear-gradient(90deg, var(--nav-accent-1), var(--nav-accent-2));
+    color: var(--nav-text-on-accent);
+    box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.04);
+    pointer-events: none;
+    /* avoid clicking current link repeatedly */
+}
+
+/* If you prefer the active item to remain clickable, remove pointer-events rule */
+
+/* --- small paragraphs/definitions inside contatos centered as requested --- */
+.contactos dl,
+.contactos p {
+    width: 100%;
+    text-align: center;
+    margin: 0;
+}
+
+/* --- Responsive tweaks for small screens --- */
+@media (max-width: 980px) {
+    .perfil {
+        width: 100%;
+        padding: 1.2rem;
+        border-radius: var(--radius, 12px);
+    }
+
+    .navegacao a {
+        padding: .6rem .85rem;
+        min-height: 48px;
+        font-size: 0.98rem;
+    }
+
+    .foto-perfil img {
+        max-width: 220px;
+    }
+}
+
+/* --- Respect user preference for reduced motion --- */
+@media (prefers-reduced-motion: reduce) {
+
+    .navegacao a,
+    .navegacao a:hover,
+    .navegacao a:focus-visible {
+        transition: none !important;
+        transform: none !important;
+        box-shadow: none !important;
+    }
+}
+
+/* --- Optional utility: small icon + label layout inside link --- */
+/* Use <a><span class="nav-icon">…</span><span class="nav-label">Label</span></a> */
+.navegacao a .nav-icon {
+    display: inline-flex;
+    width: 1.6rem;
+    justify-content: center;
+    align-items: center;
+    margin-right: 0.5rem;
+    opacity: 0.95;
+}
+
+.navegacao a .nav-label {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* --- Print-friendly --- */
+@media print {
+    .navegacao a {
+        background: none !important;
+        color: #000 !important;
+        box-shadow: none !important;
+        transform: none !important;
+    }
+}
+
+/* ---------------- Lado esquerdo / Foto (aprimorado) ---------------- */
+
+/* Usa variáveis quando disponíveis; tem fallback seguro */
+.perfil {
+    width: 30%;
+    /* preservado */
+    background: linear-gradient(135deg, var(--bg-1, #0A2342) 0%, var(--accent, #FF7F11) 100%);
+    color: var(--card-foreground, #fff);
+    padding: 2rem 1.5rem;
+    /* preservado */
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    /* preservado */
+    justify-content: flex-start;
+    align-items: center;
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+    box-shadow: var(--perfil-shadow, 0 8px 28px rgba(2, 6, 23, 0.08));
+    transition: box-shadow 220ms ease, transform 220ms ease;
+    will-change: transform;
+}
+
+/* leve elevação ao hover/focus-within sem mudar layout */
+.perfil:hover,
+.perfil:focus-within {
+    box-shadow: 0 18px 48px rgba(2, 6, 23, 0.12);
+    transform: translateY(-2px);
+}
+
+/* Foto de perfil - container */
+.foto-perfil {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    /* preservado */
+    width: 100%;
+}
+
+/* Imagem: mantém max-width 220px, shape circular e crop com object-fit */
+.foto-perfil img {
+    width: 100%;
+    /* preservado */
+    max-width: 220px;
+    /* preservado */
+    border-radius: 50%;
+    /* preservado (circular) */
+    object-fit: cover;
+    /* preservado */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+    transition: transform 360ms cubic-bezier(.2, .9, .25, 1), box-shadow 360ms cubic-bezier(.2, .9, .25, 1);
+    cursor: pointer;
+    display: block;
+    aspect-ratio: 1/1;
+}
+
+/* Hover/Focus (acessível): micro-interação, não altera dimensões */
+.foto-perfil img:hover,
+.foto-perfil img:focus-visible {
+    transform: translateY(-6px) rotate(1deg) scale(1.06);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.42);
+    outline: 4px solid rgba(255, 214, 10, 0.14);
+    outline-offset: 6px;
+}
+
+/* Modal (a ser controlado por JS adicionando/removendo .open) */
+/* Mantive hidden por padrão; .open mostra com transição suave */
+.modal-foto {
+    display: none;
+    /* preservado: invisível por padrão */
+    position: fixed;
+    z-index: 1000;
+    inset: 0;
+    /* shorthand para left:0;top:0;right:0;bottom:0 */
+    background-color: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+    padding: 1.5rem;
+    gap: 1rem;
+    overflow: auto;
+}
+
+/* Classe que torna o modal visível (JS deve alternar) */
+.modal-foto.open {
+    display: flex;
+    animation: modalFade 240ms ease;
+}
+
+/* Modal inner image */
+.modal-foto img {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 12px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+    transform-origin: center center;
+    animation: zoomIn 360ms cubic-bezier(.2, .9, .25, 1);
+}
+
+/* soft keyframe para o modal */
+@keyframes modalFade {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes zoomIn {
+    from {
+        transform: scale(0.85);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Acessibilidade: esconda conteúdo do modal quando fechado */
+.modal-foto[aria-hidden="true"] {
+    display: none !important;
+}
+
+/* Se o modal tiver um botão de fechar visível, estiliza-o aqui (opcional) */
+.modal-foto .close-btn {
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 1.1rem;
+    padding: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* Garantir que a imagem não exceda o espaço disponível em mobile */
+@media (max-width: 980px) {
+    .perfil {
+        width: 100%;
+        /* faz stack, mantém proporções conforme rest of CSS */
+        padding: 1.2rem;
+        border-radius: 12px;
+    }
+
+    .foto-perfil img {
+        max-width: 220px;
+        /* preservado */
+    }
+
+    .modal-foto img {
+        max-width: 95%;
+        max-height: 80%;
+    }
+}
+
+/* Respeitar preferência de reduzir movimento */
+@media (prefers-reduced-motion: reduce) {
+
+    .perfil,
+    .foto-perfil img,
+    .modal-foto img {
+        transition: none !important;
+        animation: none !important;
+    }
+}
+
+/* ===========================
+   Contactos & Slogan — aprimorado (SEM EMOJIS)
+   - mantém aparência original, melhora contraste, foco e responsividade
+   =========================== */
+
+/* Variáveis úteis (herde do :root global se existir) */
+:root {
+    --accent-2: #FFD60A;
+    --text-on-accent: #fff;
+    --contact-radius: 8px;
+    --contact-padding: 0.6rem 0.8rem;
+    --contact-bg-subtle: rgba(255, 255, 255, 0.03);
+}
+
+/* Cabeçalho dos contactos */
+.contactos h2 {
+    font-size: 1.3rem;
+    margin-bottom: 0.6rem;
+    color: var(--accent-2);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    font-weight: 700;
+    position: relative;
+    padding-left: 1.2rem;
+    /* espaço para o decorativo à esquerda */
+    line-height: 1.05;
+    display: inline-block;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Decorativo à esquerda (substitui o emoji) */
+.contactos h2::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(255, 214, 10, 0.12), rgba(255, 214, 10, 0.24));
+    border: 1px solid rgba(255, 214, 10, 0.18);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08), inset 0 -2px 6px rgba(255, 214, 10, 0.06);
+    pointer-events: none;
+    /* decorative only: improves visual identity without using emoji */
+}
+
+/* (Opcional) um pequeno traço interno para sugerir ícone sem usar emoji */
+/* usando ::after para criar um minimal-phone-ish stroke (puro CSS) */
+.contactos h2::after {
+    content: "";
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%) rotate(-25deg);
+    width: 12px;
+    height: 6px;
+    border-radius: 3px;
+    border-bottom: 2px solid var(--accent-2);
+    border-right: 2px solid var(--accent-2);
+    opacity: 0.95;
+    pointer-events: none;
+}
+
+/* Texto dos contactos (parágrafos) */
+.contactos p {
+    font-size: 0.95rem;
+    margin-bottom: 0.3rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.96);
+    line-height: 1.35;
+    word-break: break-word;
+}
+
+/* Links dentro de contactos — estilo e foco acessível */
+.contactos a {
+    color: inherit;
+    text-decoration: underline;
+    font-weight: 700;
+    transition: color 160ms ease, opacity 160ms ease, text-decoration 160ms;
+}
+
+.contactos a:hover {
+    text-decoration: none;
+    color: #fff;
+    opacity: 0.95;
+}
+
+.contactos a:focus-visible {
+    outline: 3px solid rgba(255, 214, 10, 0.32);
+    outline-offset: 3px;
+    border-radius: 6px;
+}
+
+/* Slogan (blockquote) — legibilidade e contraste melhorados */
+.slogan blockquote {
+    font-style: italic;
+    font-size: 1rem;
+    color: #fff;
+    border-left: 4px solid var(--accent-2);
+    padding-left: 0.8rem;
+    line-height: 1.4;
+    text-align: left;
+    margin: 0;
+    background: var(--contact-bg-subtle);
+    padding: 0.6rem 0.8rem;
+    border-radius: 8px;
+    box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.04);
+}
+
+/* Responsividade */
+@media (max-width: 480px) {
+    .contactos h2 {
+        padding-left: 1rem;
+        font-size: 1.12rem;
+    }
+
+    .contactos h2::before {
+        width: 30px;
+        height: 30px;
+        left: 0;
+    }
+
+    .contactos h2::after {
+        left: 8px;
+        width: 10px;
+        height: 5px;
+    }
+
+    .slogan blockquote {
+        padding-left: 0.6rem;
+        padding-right: 0.6rem;
+    }
+}
+
+/* Reduced motion respect */
+@media (prefers-reduced-motion: reduce) {
+
+    .contactos h2,
+    .contactos h2::before,
+    .contactos h2::after,
+    .slogan blockquote,
+    .contactos a {
+        transition: none !important;
+    }
+}
+
+/* Light-panel adjustments (se the left panel becomes light-themed) */
+:where(.panel--light) .contactos p,
+:where(.panel--light) .slogan blockquote {
+    color: #222;
+}
+
+:where(.panel--light) .contactos h2 {
+    color: #ff8a00;
+}
+
+
+/* ------------------ Navegação (aprimorada, mantendo dimensões) ------------------ */
+
+/* container */
+.navegacao {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    /* preservado */
+    width: 100%;
+}
+
+/* título da navegação */
+.navegacao h2 {
+    font-size: 1.2rem;
+    /* preservado */
+    margin-bottom: 0.5rem;
+    color: var(--accent-2, #FFD60A);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 800;
+    line-height: 1;
+}
+
+/* lista */
+.navegacao ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    /* preservado */
+}
+
+/* item / link: mantém padding e radius originais, mas com visual mais moderno */
+.navegacao li a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    /* preservado */
+    background: linear-gradient(90deg, #2ECC71 0%, #21b573 100%);
+    /* cor inicial preservada */
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 0.6rem 1rem;
+    /* preservado */
+    border-radius: 8px;
+    /* preservado */
+    box-shadow: 0 6px 18px rgba(2, 6, 23, 0.08);
+    transition: transform 220ms cubic-bezier(.2, .9, .25, 1), background 220ms ease, box-shadow 220ms ease, color 220ms;
+    will-change: transform, box-shadow;
+}
+
+/* hover: mantém a troca de cores mas com micro-elevação mais suave */
+.navegacao li a:hover {
+    transform: translateY(-3px);
+    background: linear-gradient(90deg, var(--accent-2, #FFD60A) 0%, var(--accent, #FF7F11) 100%);
+    color: var(--bg-1, #0A2342);
+    box-shadow: 0 12px 34px rgba(2, 6, 23, 0.12);
+    text-decoration: none;
+}
+
+/* foco visível — apenas para teclados (mais acessível que :focus puro) */
+.navegacao li a:focus-visible {
+    outline: 3px solid rgba(255, 214, 10, 0.36);
+    outline-offset: 4px;
+    border-radius: 10px;
+    box-shadow: 0 14px 36px rgba(2, 6, 23, 0.14);
+}
+
+/* caso o navegador não suporte :focus-visible, mantém fallback */
+.navegacao li a:focus {
+    outline: none;
+}
+
+/* Indicador de foco interno (ex.: ícone) — opcional, não altera layout */
+.navegacao li a .nav-icon {
+    opacity: 0.95;
+    transform-origin: center;
+    transition: transform 220ms;
+}
+
+.navegacao li a:hover .nav-icon {
+    transform: translateY(-2px) scale(1.02);
+}
+
+/* adaptações para leitura de alto contraste */
+@media (prefers-contrast: more) {
+    .navegacao li a {
+        box-shadow: none;
+        background: #000;
+        color: #fff;
+        border: 2px solid var(--accent-2, #FFD60A);
+    }
+
+    .navegacao h2 {
+        color: #FFD60A;
+    }
+}
+
+/* reduz animações para utilizadores que preferem menos movimento */
+@media (prefers-reduced-motion: reduce) {
+
+    .navegacao li a,
+    .navegacao li a .nav-icon {
+        transition: none !important;
+        transform: none !important;
+    }
+}
+
+/* responsivo: mantém o mesmo visual mas garante bom encaixe em mobile */
+@media (max-width: 480px) {
+    .navegacao ul {
+        gap: 0.5rem;
+    }
+
+    .navegacao li a {
+        padding: 0.55rem 0.9rem;
+        font-size: 0.93rem;
+    }
+}
+
+
+/* ------------------ Área direita do CV (aprimorada) ------------------ */
+.conteudo {
+    width: 70%;
+    /* preservado */
+    padding: 2.5rem;
+    /* preservado */
+    background: var(--content-bg, #f9f9f9);
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    /* preservado */
+    border-top-right-radius: var(--radius, 12px);
+    border-bottom-right-radius: var(--radius, 12px);
+    color: var(--text-dark, #071426);
+    box-shadow: 0 6px 22px rgba(8, 24, 40, 0.04);
+    transition: box-shadow var(--transition, 220ms) ease, transform var(--transition, 220ms) ease;
+    will-change: transform;
+    min-width: 0;
+    /* evita overflow em flex children */
+    align-self: stretch;
+}
+
+/* Conteúdo interno: cartões consistentes (Sobre, Percurso, Competências) */
+.conteudo>section {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(250, 250, 250, 0.98));
+    padding: 1.5rem 2rem;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(8, 24, 40, 0.04);
+    transition: box-shadow var(--transition, 220ms) ease, transform var(--transition, 220ms) ease;
+}
+
+.conteudo>section:hover {
+    box-shadow: 0 18px 40px rgba(8, 24, 40, 0.08);
+    transform: translateY(-4px);
+}
+
+/* Section headings (consistentes e legíveis) */
+.conteudo h2 {
+    font-size: 1.4rem;
+    margin: 0 0 0.9rem 0;
+    color: var(--accent, #FF7F11);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Lead paragraph utility */
+.lead {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #24323f;
+    margin: 0;
+    max-width: min(72ch, 100%);
+}
+
+/* Linha de título + barra (utilizada nas barras de progresso) */
+.bar-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.bar-label {
+    flex: 1 1 40%;
+    font-weight: 700;
+    color: var(--text-dark, #071426);
+    min-width: 0;
+    /* garante truncamento quando necessário */
+}
+
+/* ======= Gráfico — versão aprimorada, acessível e responsiva =======
+   Usage:
+     • Preferred: set the value with an inline custom property on the container:
+         <div class="grafico" style="--value:72%" aria-valuenow="72" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
+     • Fallback: set the .grafico .fill { width: XX%; } inline or via JS.
+   =================================================================== */
+
+/* variables localizadas para fácil personalização */
+.grafico {
+    --height: 24px;
+    --radius: 999px;
+    --bg-start: rgba(4, 20, 38, 0.06);
+    --bg-end: rgba(4, 20, 38, 0.02);
+    --fill-start: #059669;
+    /* tom sucesso / verde */
+    --fill-mid: #16a34a;
+    --fill-glow: rgba(22, 163, 74, 0.18);
+    --text-dark: #071426;
+    --transition: 900ms cubic-bezier(.2, .9, .25, 1);
+    height: var(--height);
+    background: linear-gradient(90deg, var(--bg-start), var(--bg-end));
+    border-radius: var(--radius);
+    overflow: hidden;
+    position: relative;
+    flex: 0 0 40%;
+    min-width: 180px;
+    box-shadow: inset 0 -2px 6px rgba(0, 0, 0, 0.04);
+    display: flex;
+    align-items: center;
+    font-variant-numeric: tabular-nums;
+    /* improve contrast on patterned backgrounds */
+    isolation: isolate;
+}
+
+/* Fill: use custom property --value (e.g. --value:72%) to control width */
+.grafico .fill {
+    height: 100%;
+    width: var(--value, 0%);
+    background: linear-gradient(90deg, var(--fill-start) 0%, var(--fill-mid) 60%);
+    display: inline-flex;
+    align-items: center;
+    transition: width var(--transition), box-shadow 360ms ease;
+    box-shadow: inset 0 -6px 12px rgba(0, 0, 0, 0.05), 0 6px 20px var(--fill-glow);
+    padding-left: 0.6rem;
+    line-height: var(--height);
+    font-weight: 800;
+    color: var(--text-dark);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Label visually inside the fill; use a span so screen-readers can still read aria-valuenow */
+.grafico .fill>span {
+    display: inline-block;
+    transform: translateY(0);
+    font-size: 0.9rem;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.25);
+    mix-blend-mode: normal;
+}
+
+/* External percentage label (kept like original, but more legible) */
+.grafico[data-percent]::after,
+.grafico[aria-valuenow]::after {
+    content: attr(data-percent);
+    /* if aria-valuenow present, prefer that content (JS can set data-percent to match aria) */
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-weight: 800;
+    font-size: 0.9rem;
+    color: var(--text-dark);
+    background: rgba(255, 255, 255, 0.0);
+    padding: 0 4px;
+    line-height: 1;
+    pointer-events: none;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+/* If you want the external label to read aria-valuenow automatically (no JS),
+   set data-percent to attr(aria-valuenow) via server or JS. */
+
+/* Accessible focus styling if the progressbar is focusable */
+.grafico[role="progressbar"]:focus-visible {
+    outline: 3px solid rgba(255, 214, 10, 0.28);
+    outline-offset: 4px;
+    border-radius: calc(var(--radius) + 2px);
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.12);
+}
+
+/* small decorative shimmer/glow (subtle) */
+.grafico .fill::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: -20%;
+    bottom: -20%;
+    width: 8%;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0.02));
+    transform: translateX(-6%) rotate(-4deg);
+    pointer-events: none;
+    opacity: 0.18;
+    mix-blend-mode: overlay;
+}
+
+/* Container for grouped bars / card */
+.grafico-eixos {
+    background: #f4f6f8;
+    border-radius: 10px;
+    padding: 1rem 1.5rem;
+    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.03);
+}
+
+/* Rows behaviour */
+.bar-row {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+/* Mobile responsiveness — keeps proportions and stacks elegantly */
+@media (max-width: 980px) {
+    .conteudo {
+        width: 100%;
+        padding: 1.25rem;
+        border-radius: var(--radius, 12px);
+    }
+
+    .conteudo>section {
+        padding: 1rem;
+    }
+
+    .bar-row {
+        gap: 0.6rem;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .grafico {
+        min-width: 0;
+        flex: 1 1 100%;
+        width: 100%;
+    }
+
+    .grafico[data-percent]::after {
+        right: 12px;
+    }
+
+    .grafico .fill {
+        padding-left: 0.5rem;
+    }
+}
+
+/* Reduced motion respect */
+@media (prefers-reduced-motion: reduce) {
+
+    .grafico .fill,
+    .grafico .fill::before,
+    .grafico {
+        transition: none !important;
+        animation: none !important;
+    }
+}
+
+/* Print-friendly adjustments */
+@media print {
+    .grafico {
+        box-shadow: none;
+        background: #efefef;
+    }
+
+    .grafico .fill {
+        transition: none;
+        box-shadow: none;
+    }
+
+    .grafico[data-percent]::after {
+        color: #000;
+    }
+}
+
+/* -------------------------
+   Small utility: quick JS-free fallback
+   If you cannot set --value inline, you can set width via attribute CSS rules:
+     .grafico[data-value="50"] .fill { width: 50%; }
+   (Add rules as needed for fixed values.)
+   ------------------------- */
+
+/* ---------------- Sobre + Percurso (aprimorado) ---------------- */
+
+/* Card base para as secções Sobre / Percurso */
+.sobre-mim,
+.percurso {
+    background-color: var(--card-bg, #ffffff);
+    padding: 1.5rem 2rem;
+    /* mantido */
+    border-radius: 12px;
+    /* mantido */
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    transition: box-shadow 280ms cubic-bezier(.2, .9, .25, 1), transform 280ms cubic-bezier(.2, .9, .25, 1);
+    will-change: transform;
+    color: var(--text-dark, #24323f);
+}
+
+/* micro-elevação no hover/focus-within (subtil) */
+.sobre-mim:hover,
+.percurso:hover,
+.sobre-mim:focus-within,
+.percurso:focus-within {
+    box-shadow: 0 12px 34px rgba(8, 24, 40, 0.10);
+    transform: translateY(-4px);
+}
+
+/* Títulos das secções — mantém tipografia mas mais consistente */
+.sobre-mim h2,
+.percurso h2 {
+    font-size: 1.6rem;
+    /* mantido */
+    color: var(--accent, #FF7F11);
+    /* usa variável se disponível */
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 800;
+    line-height: 1;
+}
+
+/* Texto do Sobre — legibilidade refinada */
+.sobre-mim p {
+    font-size: 1rem;
+    /* mantido */
+    line-height: 1.8;
+    color: var(--body-text, #333);
+    text-align: justify;
+    margin: 0;
+}
+
+.sobre-mim strong {
+    color: var(--text-dark, #0A2342);
+}
+
+/* Cada barra de progresso (estrutura) */
+.barra {
+    margin-bottom: 1.5rem;
+}
+
+/* mantido */
+
+.barra span {
+    display: block;
+    font-weight: 700;
+    /* mantido (bold) */
+    font-size: 1rem;
+    /* mantido */
+    margin-bottom: 0.4rem;
+    /* mantido */
+    color: var(--text-dark, #0A2342);
+    line-height: 1.15;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Contêiner da barra (visual) — agora neutro e acessível */
+.grafico {
+    height: 24px;
+    /* mantido */
+    background: linear-gradient(90deg, rgba(4, 20, 38, 0.06), rgba(4, 20, 38, 0.02));
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+    color: var(--text-dark, #0A2342);
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding-left: 0.6rem;
+    /* mantido visual */
+    line-height: 24px;
+    box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.06);
+    transition: background 220ms ease;
+}
+
+/* Dupla compatibilidade:
+   1) Se usares .grafico > .fill (recomendado) — animamos a largura da .fill
+   2) Se ainda define a largura diretamente em .grafico (ex.: #cv3 .grafico { width:90% }) — mostramos o contêiner com essa largura e uma cor adequada
+*/
+
+/* 1) .fill interno (recomendado): gradiente acessível, texto interno legível */
+.grafico>.fill {
+    display: block;
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--success, #059669) 0%, #16a34a 60%);
+    box-shadow: inset 0 -6px 14px rgba(0, 0, 0, 0.06);
+    transition: width 900ms cubic-bezier(.2, .9, .25, 1);
+    padding-left: 0.6rem;
+    color: var(--card-foreground, #071426);
+    line-height: 24px;
+    font-weight: 800;
+}
+
+/* 2) Fallback: se a largura for aplicada ao próprio .grafico (compatibilidade retroativa),
+   aplicamos um overlay graduado para legibilidade e mostramos um rótulo via pseudo-elemento */
+.grafico[style],
+.grafico[style]::before {
+    /* se largura foi aplicada inline no container, tratamos como fallback visual */
+}
+
+.grafico[style] {
+    background: linear-gradient(90deg, rgba(255, 214, 10, 0.95), rgba(255, 214, 10, 0.95));
+    color: var(--text-dark, #0A2342);
+    padding-left: 0.6rem;
+    box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.08);
+}
+
+/* Etiqueta percentual: mostrada pelo pseudo-elemento quando não existe .fill
+   — se houver .fill, a percentagem idealmente está dentro do .fill */
+.grafico:not(:has(.fill))[data-percent]::after,
+.grafico:not(:has(.fill))[data-percent]::after {
+    content: attr(data-percent);
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-weight: 800;
+    font-size: 0.9rem;
+    color: var(--text-dark, #0A2342);
+    background: transparent;
+    pointer-events: none;
+}
+
+/* Mantive as tuas regras individuais (#cv3/#cv4/#cv5) compatíveis — elas continuam a funcionar,
+   mas recomendo migrar para data-percent + .fill para maior semântica e animação controlada. */
+
+/* Pequena melhoria visual nas barras cheias (100%) */
+#cv4 .grafico,
+.grafico[data-percent="100%"] {
+    box-shadow: inset 0 -2px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* Respeita preferências de redução de movimento */
+@media (prefers-reduced-motion: reduce) {
+    .grafico>.fill {
+        transition: none !important;
+    }
+
+    .sobre-mim,
+    .percurso {
+        transition: none !important;
+        transform: none !important;
+    }
+}
+
+/* Impressão: barras imprimem como caixas simples e texto legível */
+@media print {
+
+    .sobre-mim,
+    .percurso {
+        box-shadow: none;
+        background: #fff;
+    }
+
+    .grafico {
+        background: #eee;
+        box-shadow: none;
+    }
+
+    .grafico>.fill {
+        background: #bbb;
+    }
+}
+
+
+/* ---------- Competências gráficas & Rodapé (aprimorado) ---------- */
+
+/* usa variáveis globais quando disponíveis; mantém dimensões e comportamento visual */
+.competencias {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(250, 250, 250, 0.98));
+    padding: 1.5rem 2rem;
+    /* mantido */
+    border-radius: 12px;
+    /* mantido */
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    transition: box-shadow 260ms cubic-bezier(.2, .9, .25, 1), transform 260ms cubic-bezier(.2, .9, .25, 1);
+    will-change: transform;
+    color: var(--text-dark, #0A2342);
+}
+
+.competencias:hover,
+.competencias:focus-within {
+    box-shadow: 0 12px 34px rgba(8, 24, 40, 0.10);
+    transform: translateY(-4px);
+}
+
+/* título consistente com o resto da página — mantém tipografia original */
+.competencias h2 {
+    font-size: 1.6rem;
+    /* mantido */
+    color: var(--accent, #FF7F11);
+    margin-bottom: 1.2rem;
+    /* mantido */
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 800;
+}
+
+/* Área gráfica (eixos) preparada para futura ligação a JS / canvas / SVG */
+.grafico-eixos {
+    background: var(--eixos-bg, #f4f4f4);
+    /* mantido */
+    border-radius: 10px;
+    padding: 1rem 1.5rem;
+    /* mantido */
+    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.05);
+    color: var(--text-dark, #0A2342);
+}
+
+/* Lista de competências — mantém layout vertical */
+.grafico-eixos ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    /* mantido */
+}
+
+/* Itens: aparência mais polida (gradiente, melhor contraste) */
+/* mantenho o tamanho de fonte e padding originais, só melhoro cores e foco */
+.grafico-eixos li {
+    font-weight: 800;
+    /* mantido (bold) */
+    font-size: 1rem;
+    /* mantido */
+    color: var(--text-dark, #0A2342);
+    background: linear-gradient(90deg, var(--accent-2, #FFD60A) 0%, var(--accent, #FF7F11) 100%);
+    padding: 0.6rem 1rem;
+    /* mantido */
+    border-radius: 8px;
+    /* mantido */
+    box-shadow: 0 4px 14px rgba(2, 6, 23, 0.06);
+    transition: transform 220ms cubic-bezier(.2, .9, .25, 1), box-shadow 220ms;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+/* Hover: suave elevação sem alterar layout */
+.grafico-eixos li:hover {
+    transform: translateY(-3px) scale(1.01);
+    box-shadow: 0 14px 40px rgba(2, 6, 23, 0.10);
+}
+
+/* Foco acessível para teclado (keyboard-first) */
+.grafico-eixos li:focus-within,
+.grafico-eixos li:focus {
+    outline: 3px solid rgba(255, 214, 10, 0.28);
+    outline-offset: 4px;
+    border-radius: 10px;
+}
+
+/* Permitir que cada item contenha um rótulo e uma barra (para futura expansão) */
+.grafico-eixos li .label {
+    flex: 1 1 auto;
+}
+
+.grafico-eixos li .meta {
+    font-weight: 700;
+    color: rgba(4, 20, 38, 0.7);
+}
+
+/* Hover e foco em dispositivos de alto contraste */
+@media (prefers-contrast: more) {
+    .grafico-eixos li {
+        background: var(--accent-2, #FFD60A);
+        color: #000;
+        box-shadow: none;
+        border: 2px solid #000;
+    }
+}
+
+/* Rodapé do CV — mantém conteúdo e proporções, melhora contraste e legibilidade */
+.site-footer {
+    text-align: center;
+    padding: 1rem 0;
+    /* mantido */
+    background: var(--bg-1, #0A2342);
+    color: #fff;
+    font-size: 0.9rem;
+    /* mantido */
+    border-top: 4px solid var(--accent, #FF7F11);
+    margin-top: auto;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* texto do rodapé */
+.site-footer p {
+    margin: 0;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: #fff;
+}
+
+/* Responsividade: mantém o estilo visual porém adapta espaçamento em mobile */
+@media (max-width: 980px) {
+    .competencias {
+        padding: 1.2rem;
+    }
+
+    .grafico-eixos {
+        padding: 0.8rem 1rem;
+    }
+
+    .grafico-eixos li {
+        padding: 0.55rem 0.9rem;
+        font-size: 0.98rem;
+    }
+
+    .site-footer {
+        padding: 0.8rem 0;
+        font-size: 0.88rem;
+    }
+}
+
+/* Redução de movimento para utilizadores que preferem menos animação */
+@media (prefers-reduced-motion: reduce) {
+
+    .competencias,
+    .grafico-eixos li,
+    .site-footer {
+        transition: none !important;
+        transform: none !important;
+    }
+}
+
+/* Impressão: simplifica para papel */
+@media print {
+
+    .competencias,
+    .grafico-eixos,
+    .site-footer {
+        box-shadow: none;
+        background: #fff;
+        color: #000;
+        -webkit-print-color-adjust: exact;
+    }
+
+    .grafico-eixos li {
+        background: #eaeaea;
+        color: #000;
+        box-shadow: none;
+    }
+}
